@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>接口说明 &#8212; staytrue 0.1 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=7c91f8fd"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/translations.js?v=540d3cec"></script>
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="产品功能" href="product.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="product.html" title="产品功能"
+             accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">接口说明</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="id1">
+<h1>接口说明<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h1>
+<p>本章节为**STAYTRUE系列蓝牙模组**对接**飞利浦健身设备**的专属硬件接口、UART串口通信协议、功能指令手册，是健身设备（跑步机/单车/划船机等）与蓝牙模组开发对接、调试的核心技术依据，协议内容完全适配健身设备的蓝牙数据交互、状态上报、指令下发场景。</p>
+<section id="id2">
+<h2>一、硬件接口对接规范<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
+<p>### 1.1 健身设备通用对接要求
+1. 供电匹配：健身设备主板需为模组提供稳定直流供电，严格遵循各STAYTRUE模组VBAT电压范围，建议电源端并联100nF+10uF滤波电容，减少电机/电路干扰
+2. 电平匹配：默认3.3V TTL电平，若健身设备MCU为5V，仅可通过SDC-LE-A3/SDC-LE-A3L的PA0/PA1高压IO对接，其余IO需加电平转换芯片
+3. 接地规范：模组GND与健身设备主板电源地、信号地可靠共地，射频模块区域单独接地，避免电磁干扰影响蓝牙通信
+4. 射频防护：板载天线区域远离健身设备金属部件、电机驱动电路，预留≥5mm净空区，保证蓝牙接收/发射性能
+5. 串口接线：UART_RX/TX采用差分接线（若设备支持），普通接线需加屏蔽线，两端接100Ω匹配电阻，减少信号衰减</p>
+<p>### 1.2 健身设备主流模组对接重点
+#### SDC-LE-01（跑步机/单车/划船机主力适配）
+- 核心对接引脚：UART_RX（PD2）、UART_TX（PD3）、VCC（3.3V）、GND、RST
+- 复位脚处理：RST引脚可接健身设备MCU GPIO，异常时触发复位，正常工作时置为悬浮输入降低功耗
+- 串口优先级：唯一通信串口，需独占用于健身设备状态上报与指令接收，禁止复用其他功能</p>
+<p>#### SDC-LE-05（带音频健身设备适配，如智能动感单车）
+- 通信串口：P3（Tx/PE7）、P4（Rx/PE6），单独用于蓝牙协议交互，与音频功能引脚完全隔离
+- 音频引脚：DACR（右声道）、DACL（左声道）接健身设备功放，MICIN接麦克风，适配语音播报/蓝牙音乐功能
+- MUTE引脚：P5（PE0）可接健身设备静音按键，高电平触发全局音频静音，适配设备操作逻辑</p>
+<p>#### SDC-LE-A3/SDC-LE-A3L（高端多功能健身设备适配）
+- 串口选择：可通过CrossBar IO映射，将UART分配至靠近健身设备MCU的引脚，减少接线长度
+- 按键扩展：利用44按键矩阵扫描功能，对接健身设备的速度调节、模式切换等物理按键
+- 状态指示：映射GPIO至健身设备蓝牙指示灯，实现蓝牙连接/配对/工作状态可视化</p>
+</section>
+</section>
+<section id="uart">
+<h1>二、UART串口通信协议（健身设备专用）<a class="headerlink" href="#uart" title="链接到此标题。">¶</a></h1>
+<p>## 2.1 固定串口参数（飞利浦健身设备协议标准）</p>
+<ul class="simple">
+<li><p>波特率：9600 bps（全系列模组适配，不可修改）</p></li>
+<li><p>数据位：8位</p></li>
+<li><p>停止位：1位</p></li>
+<li><p>校验位：无</p></li>
+<li><p>流控：无</p></li>
+<li><p>通信方向：健身设备MCU → 模组（指令下发）、模组 → 健身设备MCU（状态上报/响应）</p></li>
+<li><p>传输方式：字节流传输，十六进制格式，低位先行</p></li>
+</ul>
+<p>## 2.2 统一数据帧格式（指令帧/上报帧通用）
+<strong>帧结构总长度：N+6 字节**（N为数据段长度，0≤N≤16，适配健身设备短数据交互需求）
+帧头 (2 字节) | 设备类型码 (1 字节) | 数据长度 (1 字节) | 数据段 (N 字节) | 校验位 (1 字节) | 帧尾 (1 字节)
+#### 各字段定义
+1. **帧头</strong>：固定为 <cite>0xAA 0x55</cite>，用于帧起始识别，健身设备与模组双向通信统一帧头
+2. <strong>设备类型码</strong>：标识健身设备类型，飞利浦协议专属定义，不可自定义</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0x01：跑步机</p></li>
+<li><p>0x02：动感单车</p></li>
+<li><p>0x03：划船机</p></li>
+<li><p>0x04：椭圆机</p></li>
+<li><p>0x05：踏步机</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p><strong>数据长度</strong>：标识后续**数据段**的字节数，取值0~16，若无线数据段则为0x00</p></li>
+<li><p><strong>数据段</strong>：健身设备核心交互数据，如运动速度、阻力等级、指令参数等，按设备类型定义具体格式</p></li>
+<li><p><strong>校验位</strong>：<strong>异或校验</strong>，计算范围为「设备类型码 + 数据长度 + 数据段所有字节」，单字节校验值</p></li>
+<li><p><strong>帧尾</strong>：固定为 <cite>0x0D</cite>，用于帧结束识别</p></li>
+</ol>
+<p>#### 校验位计算示例
+设备类型码0x01（跑步机）、数据长度0x02、数据段0x05 0x10
+校验位 = 0x01 ^ 0x02 ^ 0x05 ^ 0x10 = 0x16</p>
+<p>## 2.3 通信交互规则（飞利浦健身设备协议规范）
+1. <strong>指令下发</strong>：健身设备MCU主动发送指令帧，模组接收并校验，<strong>100ms内**返回响应帧，无响应则MCU重发（最多3次）
+2. **状态上报</strong>：模组按**固定周期**向健身设备MCU上报蓝牙状态（默认1s/次）；健身设备运动状态由MCU主动上报至模组，模组透传至蓝牙端（APP/终端）
+3. <strong>帧过滤</strong>：模组/MCU接收到帧头、帧尾不匹配，或校验位错误的帧，直接丢弃，不返回响应
+4. <strong>数据优先级</strong>：健身设备**急停指令**（0x00）为最高优先级，模组接收到后立即停止蓝牙数据透传，优先执行指令
+5. <strong>波特率容错</strong>：模组支持±5%波特率偏差，适配健身设备MCU时钟误差</p>
+</section>
+<section id="id3">
+<h1>三、核心功能指令集（飞利浦健身设备专属）<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h1>
+<p>按**指令下发（MCU→模组）**和**状态上报（模组→MCU）**分类，所有指令均遵循统一帧格式，数据段为指令核心参数，适配飞利浦健身设备与Kinomap、Zwift等第三方APP的对接需求。</p>
+<p>## 3.1 指令下发（健身设备MCU → STAYTRUE模组）
+指令码为数据段**第1字节**，为飞利浦协议固定定义，模组接收到后执行对应功能并返回响应（响应帧数据段为指令码+执行状态：0x00成功/0x01失败）。</p>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">指令下发列表</span><a class="headerlink" href="#id6" title="链接到此表格。">¶</a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指令码</p></th>
+<th class="head"><p>指令名称</p></th>
+<th class="head"><p>适用设备</p></th>
+<th class="head"><p>数据段格式</p></th>
+<th class="head"><p>指令功能说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>设备急停</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x00</p></td>
+<td><p>立即停止蓝牙数据透传，关闭运动数据上报</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>蓝牙开启</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x01</p></td>
+<td><p>启动蓝牙模块，进入可发现/配对模式</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>蓝牙关闭</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x02</p></td>
+<td><p>关闭蓝牙模块，进入低功耗休眠模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>配对模式设置</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x03+配对模式码</p></td>
+<td><p>0x00：普通配对/0x01：APP专属配对</p></td>
+</tr>
+<tr class="row-even"><td><p>0x04</p></td>
+<td><p>运动模式上报</p></td>
+<td><p>单车/跑步机</p></td>
+<td><p>0x04+运动模式码</p></td>
+<td><p>上报设备当前运动模式（手动/程序/竞技）</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x05</p></td>
+<td><p>阻力等级调节</p></td>
+<td><p>动感单车/划船机</p></td>
+<td><p>0x05+阻力等级(0-10)</p></td>
+<td><p>下发阻力等级，模组透传至APP</p></td>
+</tr>
+<tr class="row-even"><td><p>0x06</p></td>
+<td><p>速度阈值设置</p></td>
+<td><p>跑步机/单车</p></td>
+<td><p>0x06+速度值(km/h)</p></td>
+<td><p>设置设备最大速度，超出则触发提醒</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x07</p></td>
+<td><p>蓝牙名称配置</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x07+设备名称(ASCII)</p></td>
+<td><p>自定义蓝牙设备名称，最长16字节</p></td>
+</tr>
+<tr class="row-even"><td><p>0x08</p></td>
+<td><p>恢复默认设置</p></td>
+<td><p>所有设备</p></td>
+<td><p>0x08</p></td>
+<td><p>模组恢复出厂设置，蓝牙名称/配对信息清零</p></td>
+</tr>
+</tbody>
+</table>
+<p>## 3.2 状态上报（STAYTRUE模组 → 健身设备MCU）
+上报码为数据段**第1字节**，模组按周期或事件触发上报，健身设备MCU接收后更新本地状态（如蓝牙指示灯、APP连接提示）。</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">状态上报列表</span><a class="headerlink" href="#id7" title="链接到此表格。">¶</a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>上报码</p></th>
+<th class="head"><p>上报名称</p></th>
+<th class="head"><p>触发方式</p></th>
+<th class="head"><p>数据段格式</p></th>
+<th class="head"><p>上报内容说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x10</p></td>
+<td><p>蓝牙状态</p></td>
+<td><p>1s周期/状态变化</p></td>
+<td><p>0x10+蓝牙状态码</p></td>
+<td><p>0x00：未开启/0x01：可发现/0x02：已配对/0x03：已连接</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x11</p></td>
+<td><p>APP指令接收</p></td>
+<td><p>事件触发</p></td>
+<td><p>0x11+APP指令码+参数</p></td>
+<td><p>透传第三方APP下发的指令（如阻力调节、模式切换）</p></td>
+</tr>
+<tr class="row-even"><td><p>0x12</p></td>
+<td><p>通信异常</p></td>
+<td><p>事件触发</p></td>
+<td><p>0x12+异常码</p></td>
+<td><p>0x01：串口校验失败/0x02：蓝牙断连/0x03：数据溢出</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x13</p></td>
+<td><p>模组版本信息</p></td>
+<td><p>指令触发</p></td>
+<td><p>0x13+版本号(4字节)</p></td>
+<td><p>上报模组硬件/固件版本，如V1.1对应0x0101</p></td>
+</tr>
+<tr class="row-even"><td><p>0x14</p></td>
+<td><p>电量状态上报</p></td>
+<td><p>5s周期</p></td>
+<td><p>0x14+电量值(0-100)</p></td>
+<td><p>适配充电式健身设备，上报剩余电量</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x15</p></td>
+<td><p>配对请求上报</p></td>
+<td><p>事件触发</p></td>
+<td><p>0x15+配对地址(6字节)</p></td>
+<td><p>检测到蓝牙配对请求，上报配对设备MAC地址</p></td>
+</tr>
+</tbody>
+</table>
+<p>## 3.3 运动数据透传协议（健身设备 → 模组 → APP）
+健身设备的核心运动数据由MCU按**500ms周期**上报至模组，模组透传至已连接的第三方APP（Kinomap/Zwift），数据段为固定格式，适配健身设备运动数据标准。
+#### 通用运动数据段格式（8字节）
+速度 (1 字节) | 距离 (2 字节) | 时间 (2 字节) | 心率 (1 字节) | 卡路里 (1 字节) | 坡度 / 阻力 (1 字节)
+#### 数据取值范围（飞利浦健身设备标准）
+- 速度：0~255（单位：0.1km/h，如0x10对应1.0km/h）
+- 距离：0~65535（单位：m，累计值）
+- 时间：0~65535（单位：s，运动时长）
+- 心率：0~255（单位：bpm，0表示未检测）
+- 卡路里：0~255（单位：kcal，累计值）
+- 坡度/阻力：0~100（跑步机为坡度，单车/划船机为阻力）</p>
+</section>
+<section id="id4">
+<h1>四、错误码定义（飞利浦协议标准）<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h1>
+<p>所有错误码通过**响应帧/异常上报帧**返回，健身设备MCU可根据错误码定位问题，执行对应的故障处理逻辑（如重新发送指令、触发模组复位）。</p>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">错误码定义</span><a class="headerlink" href="#id8" title="链接到此表格。">¶</a></caption>
+<colgroup>
+<col style="width: 11.1%" />
+<col style="width: 22.2%" />
+<col style="width: 27.8%" />
+<col style="width: 38.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>错误码</p></th>
+<th class="head"><p>错误类型</p></th>
+<th class="head"><p>触发场景</p></th>
+<th class="head"><p>健身设备处理建议</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x01</p></td>
+<td><p>帧格式错误</p></td>
+<td><p>帧头/帧尾不匹配、数据长度与实际不符</p></td>
+<td><p>检查串口接线，重新按标准格式发送指令</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x02</p></td>
+<td><p>校验位错误</p></td>
+<td><p>异或校验结果与校验位不一致</p></td>
+<td><p>重新计算校验位，重发指令</p></td>
+</tr>
+<tr class="row-even"><td><p>0x03</p></td>
+<td><p>设备类型码无效</p></td>
+<td><p>发送未定义的设备类型码</p></td>
+<td><p>核对设备类型码，发送有效码值</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x04</p></td>
+<td><p>指令码无效</p></td>
+<td><p>发送非飞利浦协议定义的指令码</p></td>
+<td><p>按协议指令集发送有效指令码</p></td>
+</tr>
+<tr class="row-even"><td><p>0x05</p></td>
+<td><p>参数超出范围</p></td>
+<td><p>指令参数/运动数据超出协议规定取值范围</p></td>
+<td><p>修正参数值，符合飞利浦标准后重发</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x06</p></td>
+<td><p>蓝牙未就绪</p></td>
+<td><p>蓝牙未开启时发送指令/上报数据</p></td>
+<td><p>先发送蓝牙开启指令，等待就绪后操作</p></td>
+</tr>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>数据段过长</p></td>
+<td><p>数据段长度超过16字节</p></td>
+<td><p>按协议拆分数据，分帧发送</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x08</p></td>
+<td><p>模组忙状态</p></td>
+<td><p>模组正在执行指令，未完成时接收新指令</p></td>
+<td><p>延迟100ms后重发指令，避免指令冲突</p></td>
+</tr>
+<tr class="row-even"><td><p>0x09</p></td>
+<td><p>蓝牙断连</p></td>
+<td><p>已连接APP后断连，数据透传失败</p></td>
+<td><p>触发蓝牙重新连接，提示用户检查APP</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0A</p></td>
+<td><p>模组硬件故障</p></td>
+<td><p>串口通信正常，蓝牙功能无法启动</p></td>
+<td><p>触发模组硬复位，若仍失败则检测硬件</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h1>五、开发调试与生产测试规范<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h1>
+<p>## 5.1 开发调试重点
+1. <strong>调试串口复用</strong>：SDC-LE-05/P12、SDC-LE-A3L/P5为默认Log口，可通过该串口查看模组运行日志，定位蓝牙连接、数据透传问题
+2. <strong>运动数据模拟</strong>：开发阶段可通过MCU模拟发送运动数据，测试模组透传至APP的准确性，验证数据格式是否匹配
+3. <strong>异常模拟测试</strong>：模拟串口断连、蓝牙断连、参数错误等场景，测试模组与健身设备的故障处理逻辑
+4. <strong>第三方APP对接</strong>：优先对接Kinomap/Zwift，验证运动数据实时性、指令响应速度，确保符合APP对接标准</p>
+<p>## 5.2 生产测试规范（飞利浦健身设备量产要求）
+1. <strong>蓝牙射频测试</strong>：量产前测试模组发射功率、接收灵敏度，确保蓝牙通信距离≥10米（无遮挡）
+2. <strong>串口通信测试</strong>：连续发送1000帧指令/数据，校验通信成功率≥99.9%，无丢帧、错帧
+3. <strong>运动数据校准</strong>：校准健身设备运动数据与模组透传数据的一致性，误差≤±1%
+4. <strong>高低温测试</strong>：在-40℃~85℃环境下，测试模组蓝牙通信、串口交互的稳定性，无功能异常
+5. <strong>老化测试</strong>：模组连续工作72小时，测试蓝牙连接、数据透传的持续性，无死机、断连</p>
+<p>## 5.3 常见问题排查
+1. <strong>蓝牙无法发现</strong>：检查模组供电是否正常→确认蓝牙开启指令已发送→检查射频天线区域是否被遮挡→复位模组
+2. <strong>串口无响应</strong>：核对串口参数（9600-8-N-1）→检查RX/TX接线是否反接→测试模组硬件是否正常
+3. <strong>数据透传延迟</strong>：缩短运动数据上报周期→优化健身设备主板电路，减少电磁干扰→检查蓝牙连接信号强度
+4. <strong>APP无法接收数据</strong>：核对运动数据段格式→确认设备类型码正确→检查模组与APP的配对连接状态</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">接口说明</a><ul>
+<li><a class="reference internal" href="#id2">一、硬件接口对接规范</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uart">二、UART串口通信协议（健身设备专用）</a></li>
+<li><a class="reference internal" href="#id3">三、核心功能指令集（飞利浦健身设备专属）</a></li>
+<li><a class="reference internal" href="#id4">四、错误码定义（飞利浦协议标准）</a></li>
+<li><a class="reference internal" href="#id5">五、开发调试与生产测试规范</a></li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="product.html"
+                          title="上一章">产品功能</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="product.html" title="产品功能"
+             >上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">接口说明</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 版权所有 2026, xavier.
+      由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0创建。
+    </div>
+  </body>
+</html>

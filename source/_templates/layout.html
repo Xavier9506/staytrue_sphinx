@@ -1,0 +1,21 @@
+{% extends "!layout.html" %}
+
+{% block sidebarsearch %}
+{% endblock %}
+
+{% block relbaritems %}
+{% endblock %}
+
+{% block extrahead %}
+{{ super() }}
+<style type="text/css">
+    /* Hide search-related elements */
+    #searchbox {
+        display: none !important;
+    }
+
+    .search {
+        display: none !important;
+    }
+</style>
+{% endblock %}
