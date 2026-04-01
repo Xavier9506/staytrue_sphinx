@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SDC-LE-01D &#8212; staytrue 0.1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="../_static/documentation_options.js?v=7c91f8fd"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="SDC-LE-A3" href="sdc-le-a3.html" />
+    <link rel="prev" title="SDC-LE-01" href="sdc-le-01.html" />
+ 
+<style type="text/css">
+    /* Hide search-related elements */
+    #searchbox {
+        display: none !important;
+    }
+
+    .search {
+        display: none !important;
+    }
+</style>
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="sdc-le-a3.html" title="SDC-LE-A3"
+             accesskey="N">下一页</a> |</li>
+        <li class="right" >
+          <a href="sdc-le-01.html" title="SDC-LE-01"
+             accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../staytrue.html" accesskey="U">STAYTRUE 模块</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SDC-LE-01D</a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sdc-le-01d">
+<h1>SDC-LE-01D<a class="headerlink" href="#sdc-le-01d" title="链接到此标题。">¶</a></h1>
+<p>SDC-LE-01的插件版本，采用32位高性能RISC核心，优化了封装设计，支持直接插件安装，适合快速原型开发和小批量生产。同时具备宽电压输入特性，支持3.0V~5.5V供电（典型5V），串口支持3V/5V电平兼容，可直接与不同电平的MCU通信，无需额外电平转换电路。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/sdc-le-01d-img1.png"><img alt="SDC-LE-01D 模组正面图" src="../_images/sdc-le-01d-img1.png" width="200" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/sdc-le-01d-img2.png"><img alt="SDC-LE-01D 模组反面图" src="../_images/sdc-le-01d-img2.png" width="200" />
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+<a class="reference internal image-reference" href="../_images/sdc-le-01d-img3.png"><img alt="SDC-LE-01D 模组尺寸图" class="align-center" src="../_images/sdc-le-01d-img3.png" width="500" />
+</a>
+<section id="id1">
+<h2>核心性能<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h2>
+<ul class="simple">
+<li><p>处理器: 32位高性能RISC核心,16MHz时钟</p></li>
+<li><p>存储: 512KB Flash + 40KB SRAM</p></li>
+<li><p>蓝牙射频: 2.4GHz BLE5.0,-97dBm接收灵敏度,输出功率-20~+7dBm可编程</p></li>
+<li><p>电源特性: 宽电压输入范围,支持3.0V~5.5V供电(典型5V),具备过压保护机制</p></li>
+<li><p>串口特性: 支持3V/5V电平兼容,可直接与不同电平的MCU通信,无需额外电平转换电路</p></li>
+<li><p>认证: SRRC、FCC、BQB、NCC</p></li>
+<li><p>工作温度：-40℃ ~ +105℃</p></li>
+<li><p>封装尺寸: 31.4x20.5mm(插件接口)</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>关键引脚定义<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">关键引脚定义</span><a class="headerlink" href="#id3" title="链接到此表格。">¶</a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 45.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>引脚</p></th>
+<th class="head"><p>信号名</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>引脚类型</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TX</p></td>
+<td><p>UART_TX</p></td>
+<td><p>串口TX数据发送端</p></td>
+<td><p>O（输出）</p></td>
+</tr>
+<tr class="row-odd"><td><p>RX</p></td>
+<td><p>UART_RX</p></td>
+<td><p>串口RX数据接收端</p></td>
+<td><p>I（输入）</p></td>
+</tr>
+<tr class="row-even"><td><p>G</p></td>
+<td><p>GND</p></td>
+<td><p>模块地</p></td>
+<td><p>P（电源）</p></td>
+</tr>
+<tr class="row-odd"><td><p>5V</p></td>
+<td><p>VCC</p></td>
+<td><p>电源正极，3~5.5V（典型5V）</p></td>
+<td><p>P（电源）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SDC-LE-01D</a><ul>
+<li><a class="reference internal" href="#id1">核心性能</a></li>
+<li><a class="reference internal" href="#id2">关键引脚定义</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="sdc-le-01.html"
+                          title="上一章">SDC-LE-01</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="sdc-le-a3.html"
+                          title="下一章">SDC-LE-A3</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/modules/sdc-le-01d.rst.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="sdc-le-a3.html" title="SDC-LE-A3"
+             >下一页</a> |</li>
+        <li class="right" >
+          <a href="sdc-le-01.html" title="SDC-LE-01"
+             >上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../staytrue.html" >STAYTRUE 模块</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SDC-LE-01D</a></li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 版权所有 2026, xavier.
+      由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0创建。
+    </div>
+  </body>
+</html>

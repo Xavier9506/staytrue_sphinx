@@ -1,3 +1,5 @@
 {
-    "staytrue": 0.092
+    "modules/sdc-le-01": 0.032,
+    "modules/sdc-le-a3": 0.016,
+    "modules/sdc-le-a3h": 0.008
 }
