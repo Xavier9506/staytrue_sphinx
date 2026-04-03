@@ -6,10 +6,10 @@ SDC-LE-01
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: ../images/sdc-le-01-img1.png
+   * - .. image:: sdc-le-01/images/sdc-le-01-img1.png
          :width: 300
          :alt: SDC-LE-01 模组正面图
-     - .. image:: ../images/sdc-le-01-img2.png
+     - .. image:: sdc-le-01/images/sdc-le-01-img2.png
          :width: 300
          :alt: SDC-LE-01 模组反面图
 
@@ -17,10 +17,10 @@ SDC-LE-01
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: ../images/sdc-le-01-img3.png
+   * - .. image:: sdc-le-01/images/sdc-le-01-img3.png
          :width: 300
          :alt: SDC-LE-01 模组引脚图
-     - .. image:: ../images/sdc-le-01-img4.png
+     - .. image:: sdc-le-01/images/sdc-le-01-img4.png
          :width: 300
          :alt: SDC-LE-01 模组尺寸图
 
@@ -31,7 +31,7 @@ SDC-LE-01
 - 蓝牙射频：2.4GHz BLE5.0，-97dBm接收灵敏度，输出功率-20~+7dBm可编程
 - 认证：SRRC、FCC、CE-RED、BQB、NCC
 - 工作温度：-40℃ ~ +105℃
-- 封装尺寸: 邮票孔封装，半孔间距1.27mm，尺寸13×19mm
+- 封装尺寸: 邮票孔封装，半孔间距1.27mm，尺寸13mm×19mm
 
 关键引脚定义
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,3 +116,16 @@ SDC-LE-01
      - 数字输入低电平
      - ≤0.3×VDD
      - V
+
+认证证书
+~~~~~~~~~~
+- **CE-RED**：符合欧盟无线电设备指令，通过CE认证
+  - 下载链接：`CE-RED证书 <../certificates/sdc-le-01-ce-red.pdf>`_
+- **FCC**：符合美国联邦通信委员会标准，通过FCC认证
+  - 下载链接：`FCC证书 <../certificates/sdc-le-01-fcc.pdf>`_
+- **NCC**：符合台湾通讯传播委员会标准，通过NCC认证
+  - 下载链接：`NCC证书 <../certificates/sdc-le-01-ncc.pdf>`_
+- **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证
+  - 下载链接：`SRRC证书 <../certificates/sdc-le-01-srrc.pdf>`_
+- **BQB**：符合蓝牙技术联盟标准，通过BQB认证
+  - 下载链接：`BQB证书 <../certificates/sdc-le-01-bqb.pdf>`_

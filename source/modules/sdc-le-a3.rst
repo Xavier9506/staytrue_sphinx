@@ -6,17 +6,17 @@ AB2021A3核心，极致成本控制，满足基础BLE通信需求，采用贴片
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: ../images/sdc-le-a3-img1.png
+   * - .. image:: sdc-le-a3/images/sdc-le-a3-img1.png
          :width: 300
          :alt: SDC-LE-A3 模组正面图
-     - .. image:: ../images/sdc-le-a3-img2.png
+     - .. image:: sdc-le-a3/images/sdc-le-a3-img2.png
          :width: 300
          :alt: SDC-LE-A3 模组反面图
 
-.. image:: ../images/sdc-le-a3-img3.png
+.. image:: sdc-le-a3/images/sdc-le-a3-img3.png
    :width: 300
    :align: center
-   :alt: SDC-LE-A3 模组引脚图
+   :alt: SDC-LE-A3 模组尺寸图模组引脚图
    
 核心性能
 ~~~~~~~~~~
@@ -27,7 +27,7 @@ AB2021A3核心，极致成本控制，满足基础BLE通信需求，采用贴片
 - 扩展功能：16引脚引出，支持UART/IIC/SPI、44按键矩阵扫描、Touch Key、LEDC幻彩灯驱动
 - 特殊IO：2路高压IO（PA0/PA1），支持5V MCU通信
 - 工作温度：-40℃~85℃
-- 封装尺寸: 邮票孔封装，半孔间距1.25mm，尺寸13×19mm
+- 封装尺寸: 邮票孔封装，半孔间距1.27mm，尺寸13mm×19mm
 
 关键引脚定义
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,3 +116,14 @@ AB2021A3核心，极致成本控制，满足基础BLE通信需求，采用贴片
      - 数字输入低电平
      - ≤0.3×VDDIO
      - V
+
+认证证书
+~~~~~~~~~~
+- **CE-RED**：符合欧盟无线电设备指令，通过CE认证
+  - 下载链接：`CE-RED证书 <../certificates/sdc-le-a3-ce-red.pdf>`_
+- **FCC**：符合美国联邦通信委员会标准，通过FCC认证
+  - 下载链接：`FCC证书 <../certificates/sdc-le-a3-fcc.pdf>`_
+- **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证
+  - 下载链接：`SRRC证书 <../certificates/sdc-le-a3-srrc.pdf>`_
+- **BQB**：符合蓝牙技术联盟标准，通过BQB认证
+  - 下载链接：`BQB证书 <../certificates/sdc-le-a3-bqb.pdf>`_

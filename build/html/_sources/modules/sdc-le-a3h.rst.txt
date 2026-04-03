@@ -6,17 +6,17 @@ SDC-LE-A3的宽压版本，5V宽压支持，适应复杂供电环境，采用贴
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: ../images/sdc-le-a3h-img1.png
+   * - .. image:: sdc-le-a3h/images/sdc-le-a3h-img1.png
          :width: 300
          :alt: SDC-LE-A3H 模组正面图
-     - .. image:: ../images/sdc-le-a3h-img2.png
+     - .. image:: sdc-le-a3h/images/sdc-le-a3h-img2.png
          :width: 300
          :alt: SDC-LE-A3H 模组反面图
 
-.. image:: ../images/sdc-le-a3h-img3.png
+.. image:: sdc-le-a3h/images/sdc-le-a3h-img3.png
    :width: 300
    :align: center
-   :alt: SDC-LE-A3H 模组实物图
+   :alt: SDC-LE-A3H 模组尺寸图模组实物图
 
 核心性能
 ~~~~~~~~~~
@@ -32,5 +32,14 @@ SDC-LE-A3的宽压版本，5V宽压支持，适应复杂供电环境，采用贴
 核心特性
 ~~~~~~~~~~
 - 所有GPIO支持CrossBar任意映射，上电后软件配置即可切换功能
-- 优化的电源管理，休眠电流低至10μA
-- 邮票孔封装，半孔间距1.27mm，尺寸13×19mm
+
+认证证书
+~~~~~~~~~~
+- **CE-RED**：符合欧盟无线电设备指令，通过CE认证
+  - 下载链接：`CE-RED证书 <../certificates/sdc-le-a3h-ce-red.pdf>`_
+- **FCC**：符合美国联邦通信委员会标准，通过FCC认证
+  - 下载链接：`FCC证书 <../certificates/sdc-le-a3h-fcc.pdf>`_
+- **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证
+  - 下载链接：`SRRC证书 <../certificates/sdc-le-a3h-srrc.pdf>`_
+- **BQB**：符合蓝牙技术联盟标准，通过BQB认证
+  - 下载链接：`BQB证书 <../certificates/sdc-le-a3h-bqb.pdf>`_
