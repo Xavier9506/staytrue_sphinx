@@ -6,10 +6,10 @@ SDC-LE-01
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: sdc-le-01/images/sdc-le-01-img1.png
+   * - .. image:: images/sdc-le-01-img1.png
          :width: 300
          :alt: SDC-LE-01 模组正面图
-     - .. image:: sdc-le-01/images/sdc-le-01-img2.png
+     - .. image:: images/sdc-le-01-img2.png
          :width: 300
          :alt: SDC-LE-01 模组反面图
 
@@ -17,10 +17,10 @@ SDC-LE-01
    :widths: 1 1
    :header-rows: 0
 
-   * - .. image:: sdc-le-01/images/sdc-le-01-img3.png
+   * - .. image:: images/sdc-le-01-img3.png
          :width: 300
          :alt: SDC-LE-01 模组引脚图
-     - .. image:: sdc-le-01/images/sdc-le-01-img4.png
+     - .. image:: images/sdc-le-01-img4.png
          :width: 300
          :alt: SDC-LE-01 模组尺寸图
 
