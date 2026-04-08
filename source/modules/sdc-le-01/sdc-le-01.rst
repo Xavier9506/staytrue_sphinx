@@ -120,12 +120,11 @@ SDC-LE-01
 认证证书
 ~~~~~~~~~~
 - **CE-RED**：符合欧盟无线电设备指令，通过CE认证
-  - 下载链接：`CE-RED证书 <../certificates/sdc-le-01-ce-red.pdf>`_
+  - 下载链接：`CE-RED证书 <certificates/sdc-le-01-ce-red.pdf>`_
 - **FCC**：符合美国联邦通信委员会标准，通过FCC认证
-  - 下载链接：`FCC证书 <../certificates/sdc-le-01-fcc.pdf>`_
+  - 下载链接：`FCC证书 <certificates/sdc-le-01-fcc.pdf>`_
 - **NCC**：符合台湾通讯传播委员会标准，通过NCC认证
-  - 下载链接：`NCC证书 <../certificates/sdc-le-01-ncc.pdf>`_
+  - 下载链接：`NCC证书 <certificates/sdc-le-01-ncc.pdf>`_
 - **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证
-  - 下载链接：`SRRC证书 <../certificates/sdc-le-01-srrc.pdf>`_
-- **BQB**：符合蓝牙技术联盟标准，通过BQB认证
-  - 下载链接：`BQB证书 <../certificates/sdc-le-01-bqb.pdf>`_
+  - 下载链接：`SRRC证书 <certificates/sdc-le-01-srrc.pdf>`_
+- **BQB**：符合蓝牙技术联盟标准，通过BQB认证（QDID:144126）

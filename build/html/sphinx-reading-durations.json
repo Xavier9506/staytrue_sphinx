@@ -1,4 +1,15 @@
 {
-    "modules/sdc-le-01/sdc-le-01": 0.03,
-    "staytrue": 0.016
+    "api": 0.037,
+    "index": 0.003,
+    "modules/sdc-hr-p01/sdc-hr-p01": 0.002,
+    "modules/sdc-le-01/sdc-le-01": 0.019,
+    "modules/sdc-le-01d/sdc-le-01d": 0.02,
+    "modules/sdc-le-02hd/sdc-le-02hd": 0.011,
+    "modules/sdc-le-02hs/sdc-le-02hs": 0.006,
+    "modules/sdc-le-05/sdc-le-05": 0.017,
+    "modules/sdc-le-a3/sdc-le-a3": 0.022,
+    "modules/sdc-le-a3h/sdc-le-a3h": 0.008,
+    "modules/sdc-le-a3l/sdc-le-a3l": 0.022,
+    "product": 0.003,
+    "staytrue": 0.017
 }
