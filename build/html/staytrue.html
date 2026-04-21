@@ -103,31 +103,25 @@
 <td><p>BLE单模</p></td>
 <td><p>2~4.5V（3.3V）</p></td>
 </tr>
-<tr class="row-even"><td><p>SDC-LE-A3H</p></td>
-<td><p>5V宽压支持，适应复杂供电环境</p></td>
-<td><p>贴片+插针</p></td>
-<td><p>BLE单模+5V供电</p></td>
-<td><p>3~5.5V（5V）</p></td>
-</tr>
-<tr class="row-odd"><td><p>SDC-LE-05</p></td>
+<tr class="row-even"><td><p>SDC-LE-05</p></td>
 <td><p>完整音频引脚，支持BT/BLE双模</p></td>
 <td><p>贴片</p></td>
 <td><p>BT(音频)/BLE双模</p></td>
 <td><p>2.4~4.5V（3.3V）</p></td>
 </tr>
-<tr class="row-even"><td><p>SDC-LE-02HD</p></td>
+<tr class="row-odd"><td><p>SDC-LE-02HD</p></td>
 <td><p>强化5V电压+串口兼容，跨设备适配</p></td>
 <td><p>插针</p></td>
 <td><p>BT(音频)/BLE双模+5V供电/串口</p></td>
 <td><p>3~5V（5V）</p></td>
 </tr>
-<tr class="row-odd"><td><p>SDC-LE-02HS</p></td>
+<tr class="row-even"><td><p>SDC-LE-02HS</p></td>
 <td><p>强化5V电压+串口兼容，跨设备适配</p></td>
 <td><p>贴片</p></td>
 <td><p>BT(音频)/BLE双模+5V供电串口</p></td>
 <td><p>3~5V（5V）</p></td>
 </tr>
-<tr class="row-even"><td><p>SDC-HR-P01</p></td>
+<tr class="row-odd"><td><p>SDC-HR-P01</p></td>
 <td><p>内置心率算法，即插即用，无需二次开发</p></td>
 <td><p>专用接口</p></td>
 <td><p>串口通信</p></td>
@@ -168,12 +162,6 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-a3l/sdc-le-a3l.html#id4">认证证书</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules/sdc-le-a3h/sdc-le-a3h.html">SDC-LE-A3H</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-a3h/sdc-le-a3h.html#id1">核心性能</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-a3h/sdc-le-a3h.html#id2">核心特性</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-a3h/sdc-le-a3h.html#id3">认证证书</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/sdc-le-05/sdc-le-05.html">SDC-LE-05</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-05/sdc-le-05.html#id1">核心性能</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/sdc-le-05/sdc-le-05.html#id2">关键引脚定义</a></li>
@@ -194,7 +182,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html">SDC-HR-P01（心率监测型）</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html#id1">核心性能</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html#id2">核心特性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html#id2">关键引脚定义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html#id3">极限参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/sdc-hr-p01/sdc-hr-p01.html#id4">软件通信协议</a></li>
 </ul>
 </li>
 </ul>
@@ -206,17 +196,17 @@
 <section id="id4">
 <h3>3.1 电气使用要求<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h3>
 <ol class="arabic simple">
-<li><p>所有模组IO口默认3.3V，仅SDC-LE-A3/SDC-LE-A3L的PA0/PA1支持5V高压通信，其余IO严禁接5V电平</p></li>
-<li><p>VBAT供电需严格遵循各型号电压范围，超压会直接烧毁芯片</p></li>
-<li><p>SDC-LE-05的VUSB引脚使用内置充电时，5V与VUSB之间需串1R电阻+对地10uF滤波电容，防止高压脉冲损坏</p></li>
-<li><p>复位脚拉低时间需满足规格要求（10S），短时间拉低无效</p></li>
+<li><p>除非特殊指出的IO外，其余IO默认为3.3V，严禁接5V电平</p></li>
+<li><p>模组供电需严格遵循各型号电压范围，超压会直接烧毁芯片</p></li>
+<li><p>VUSB引脚使用内置充电时，5V与VUSB之间需串1R电阻+对地10uF滤波电容，防止高压脉冲损坏</p></li>
+<li><p>除SDC-LE-01、SDC-LE-01D外，其他复位脚拉低时间需满足规格要求（10S），短时间拉低无效</p></li>
 </ol>
 </section>
 <section id="id5">
 <h3>3.2 生产工艺要求<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h3>
 <ol class="arabic simple">
-<li><p>回流焊：全系列模组**建议仅过一次回流焊**，需严格遵循厂家提供的炉温曲线</p></li>
-<li><p>超声波防护：<strong>严禁暴露于超声波焊接/清洗设备</strong>，振动会与内部晶振共振，导致晶振故障/失灵；超声波场景需联系厂家定制专用型号</p></li>
+<li><p>回流焊：全系列模组 <strong>建议仅过一次回流焊</strong>，需严格遵循厂家提供的炉温曲线</p></li>
+<li><p>超声波防护： <strong>严禁暴露于超声波焊接/清洗设备</strong>，振动会与内部晶振共振，导致晶振故障/失灵；超声波场景需联系厂家定制专用型号</p></li>
 <li><p>封装焊接：邮票孔封装焊接时需控制焊锡量，避免短路引脚</p></li>
 <li><p>炉温曲线：需严格遵循厂家提供的回流焊温度曲线</p></li>
 <li><p>超声波振动：避免将模组暴露于超声波焊接机或超声波清洗机等超声波设备的振动中，可能导致晶振故障甚至失灵</p></li>
@@ -235,7 +225,7 @@
 <h2>四、包装与售后<a class="headerlink" href="#id7" title="链接到此标题。">¶</a></h2>
 <section id="id8">
 <h3>4.1 包装规格<a class="headerlink" href="#id8" title="链接到此标题。">¶</a></h3>
-<p>全系列模组支持编带装/盘装两种包装方式，具体规格（TBD）可联系厂家定制。</p>
+<p>默认盘装包装方式，具体规格（TBD）可联系厂家定制。</p>
 </section>
 <section id="id9">
 <h3>4.2 售后支持<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h3>

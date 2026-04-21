@@ -25,8 +25,6 @@
    :maxdepth: 2
 
    staytrue
-   product
-   api
 
 使用说明
 ========
