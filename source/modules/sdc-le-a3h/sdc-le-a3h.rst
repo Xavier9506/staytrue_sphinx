@@ -7,14 +7,14 @@ SDC-LE-A3的宽压版本，5V宽压支持，适应复杂供电环境，采用贴
    :header-rows: 0
 
    * - .. image:: images/sdc-le-a3h-img1.png
-         :width: 300
+         :width: 180
          :alt: SDC-LE-A3H 模组正面图
      - .. image:: images/sdc-le-a3h-img2.png
-         :width: 300
+         :width: 180
          :alt: SDC-LE-A3H 模组反面图
 
 .. image:: images/sdc-le-a3h-img3.png
-   :width: 300
+   :width: 250
    :align: center
    :alt: SDC-LE-A3H 模组尺寸图模组实物图
 

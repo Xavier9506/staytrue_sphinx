@@ -55,6 +55,7 @@ def copy_certificates(app, exception):
                     except Exception as e:
                         print(f"复制证书文件失败: {e}")
                         # 继续执行，不中断整个构建过程
+                        continue
 
 def setup(app):
     app.connect('build-finished', copy_certificates)
