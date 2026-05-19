@@ -1,0 +1,31 @@
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# .readthedocs.yaml
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.13"
+
+sphinx:
+   configuration: source/conf.py
+   language: zh_CN
+
+python:
+   install:
+   - requirements: requirements.txt
+
+# 可选：设置构建命令
+# build:
+#   commands:
+#     - cd source && make html
+
+# Optionally, but recommended,
+# declare the Python requirements required to build your documentation
+# See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
+# python:
+#    install:
+#    - requirements: docs/requirements.txt
+        
