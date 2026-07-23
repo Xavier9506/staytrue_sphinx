@@ -90,8 +90,8 @@
 </section>
 <section id="id2">
 <h2>关键引脚定义<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
-<table class="docutils align-default" id="id4">
-<caption><span class="caption-text">关键引脚定义</span><a class="headerlink" href="#id4" title="链接到此表格。">¶</a></caption>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">关键引脚定义</span><a class="headerlink" href="#id5" title="链接到此表格。">¶</a></caption>
 <colgroup>
 <col style="width: 15.0%" />
 <col style="width: 20.0%" />
@@ -160,9 +160,86 @@
 </table>
 </section>
 <section id="id3">
-<h2>认证证书<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
+<h2>极限参数<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">极限参数</span><a class="headerlink" href="#id6" title="链接到此表格。">¶</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 37.5%" />
+<col style="width: 25.0%" />
+<col style="width: 12.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>范围</p></th>
+<th class="head"><p>单位</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VDD</p></td>
+<td><p>稳态电源电压</p></td>
+<td><p>3.0 ~ 6.0</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-odd"><td><p>VDDIO</p></td>
+<td><p>I/O 电源电压</p></td>
+<td><p>3.3</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-even"><td><p>Tamb</p></td>
+<td><p>工作温度</p></td>
+<td><p>-40~+85</p></td>
+<td><p>℃</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tstg</p></td>
+<td><p>储藏温度</p></td>
+<td><p>-65~+150</p></td>
+<td><p>℃</p></td>
+</tr>
+<tr class="row-even"><td><p>Ground</p></td>
+<td><p>地</p></td>
+<td><p>-0.3~0.3</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-odd"><td><p>Voh</p></td>
+<td><p>数字输出高电平</p></td>
+<td><p>VDDIO-0.3 ~ VDDIO+0.3</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-even"><td><p>Vol</p></td>
+<td><p>数字输出低电平</p></td>
+<td><p>&lt;0.4</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ioh</p></td>
+<td><p>拉电流</p></td>
+<td><p>8~32</p></td>
+<td><p>mA</p></td>
+</tr>
+<tr class="row-even"><td><p>Iol</p></td>
+<td><p>灌电流</p></td>
+<td><p>8~32</p></td>
+<td><p>mA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vih</p></td>
+<td><p>数字输入高电平</p></td>
+<td><p>≥0.7×VDDIO</p></td>
+<td><p>V</p></td>
+</tr>
+<tr class="row-even"><td><p>ViL</p></td>
+<td><p>数字输入低电平</p></td>
+<td><p>≤0.3×VDDIO</p></td>
+<td><p>V</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h2>认证证书<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h2>
 <ul class="simple">
-<li><p><strong>CE-RED</strong>：符合欧盟无线电设备指令，通过CE认证，认证中</p></li>
+<li><p><strong>CE-RED</strong>：符合欧盟无线电设备指令，通过CE认证
+- 下载链接：<a class="reference external" href="certificates/sdc-le-02hd-ce-red.pdf">CE-RED证书</a></p></li>
 <li><p><strong>FCC</strong>：符合美国联邦通信委员会标准，通过FCC认证，认证中</p></li>
 <li><p><strong>SRRC</strong>：符合中国无线电管理委员会标准，通过SRRC认证，认证中</p></li>
 <li><p><strong>BQB</strong>：符合蓝牙技术联盟标准，通过BQB认证（QDID:215269/QDID:206297）</p></li>
@@ -183,7 +260,8 @@
 <li><a class="reference internal" href="#">SDC-LE-02HD</a><ul>
 <li><a class="reference internal" href="#id1">核心性能</a></li>
 <li><a class="reference internal" href="#id2">关键引脚定义</a></li>
-<li><a class="reference internal" href="#id3">认证证书</a></li>
+<li><a class="reference internal" href="#id3">极限参数</a></li>
+<li><a class="reference internal" href="#id4">认证证书</a></li>
 </ul>
 </li>
 </ul>
