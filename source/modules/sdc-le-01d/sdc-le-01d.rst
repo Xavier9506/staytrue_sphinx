@@ -63,6 +63,10 @@ SDC-LE-01的插件版本，采用32位高性能RISC核心，优化了封装设�
 
 认证证书
 ~~~~~~~~~~
-- **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证，认证中
-- **FCC**：符合美国联邦通信委员会标准，通过FCC认证，认证中
+- **CE-RED**：符合欧盟无线电设备指令，通过CE认证
+  - 下载链接：`CE-RED证书 <certificates/sdc-le-01d-ce-red.pdf>`_
+- **FCC**：符合美国联邦通信委员会标准，可通过FCC认证
+   - 下载链接：`FCC证书 <certificates/sdc-le-01d-fcc.pdf>`_
+- **SRRC**：符合中国无线电管理委员会标准，通过SRRC认证
+  - 下载链接：`SRRC证书 <certificates/sdc-le-01d-srrc.pdf>`_
 - **BQB**：符合蓝牙技术联盟标准，通过BQB认证（QDID:144126）
