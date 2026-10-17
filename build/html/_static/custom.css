@@ -1,0 +1,63 @@
+/* classic 主题没有响应式表格，窄屏下让宽表可横向滚动 */
+div.body table.docutils {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* 协议报文中的十六进制长串允许断行，避免撑破页面 */
+div.body table.docutils td,
+div.body table.docutils th {
+    overflow-wrap: anywhere;
+}
+
+/* Mermaid 时序图铺满正文宽度，超宽时可横向滚动 */
+div.body pre.mermaid,
+div.body div.mermaid {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* 窄屏（手机）下 classic 主题的固定宽度会撑破页面，改为上下堆叠 */
+@media screen and (max-width: 768px) {
+    div.document {
+        flex-direction: column;
+    }
+
+    div.documentwrapper {
+        float: none;
+        width: auto;
+    }
+
+    div.bodywrapper {
+        margin: 0;
+        width: auto;
+    }
+
+    div.body {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    div.sphinxsidebar {
+        float: none;
+        width: auto;
+        margin: 0;
+        order: -1;
+    }
+
+    div.body pre {
+        overflow-x: auto;
+    }
+}
+
+/* MyST tasklist（协议第 8 章检查清单） */
+div.body ul.task-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+div.body ul.task-list li input[type="checkbox"] {
+    margin-right: 0.4em;
+}

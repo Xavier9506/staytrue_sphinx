@@ -16,17 +16,35 @@ release = '0.1'
 
 extensions = [
     'sphinx.ext.duration',
+    'myst_parser',
+    'sphinxcontrib.mermaid',
 ]
 
 templates_path = ['_templates']
 exclude_patterns = []
 language = 'zh_CN'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
+
+# -- MyST (Markdown) --------------------------------------------------------
+myst_enable_extensions = ['tasklist']
+myst_heading_anchors = 3
+# 让 ```mermaid 围栏直接交给 sphinxcontrib-mermaid 处理，正文无需改写
+myst_fence_as_directive = ['mermaid']
+
+# -- Mermaid ----------------------------------------------------------------
+# 使用本地打包的 mermaid（MIT，来源 npm mermaid@11.12.1），对外发布时不依赖 CDN
+mermaid_use_local = 'js/mermaid.min.mjs'
+mermaid_output_format = 'raw'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'classic'
 html_static_path = ['_static']
+html_css_files = ['custom.css']
 html_theme_options = {
     "rightsidebar": "false",
 }

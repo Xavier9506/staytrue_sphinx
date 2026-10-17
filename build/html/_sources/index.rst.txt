@@ -26,6 +26,15 @@
 
    staytrue
 
+接口说明
+========
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 接口说明
+
+   protocol/serial-protocol
+
 使用说明
 ========
 

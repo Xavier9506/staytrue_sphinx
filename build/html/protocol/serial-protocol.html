@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>健身器材串口通信协议 &#8212; staytrue 0.1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=922a0d3a" />
+    
+    <script src="../_static/documentation_options.js?v=7c91f8fd"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script type="module">import mermaid from "../_static/js/mermaid.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="prev" title="SDC-HR-P01（心率监测型）" href="../modules/sdc-hr-p01/sdc-hr-p01.html" />
+ 
+<style type="text/css">
+    /* Hide search-related elements */
+    #searchbox {
+        display: none !important;
+    }
+
+    .search {
+        display: none !important;
+    }
+</style>
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../modules/sdc-hr-p01/sdc-hr-p01.html" title="SDC-HR-P01（心率监测型）"
+             accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">健身器材串口通信协议</a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="id1">
+<h1>健身器材串口通信协议<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h1>
+<p><strong>文档版本：V1.0</strong>　　修订日期：2026-10-17</p>
+<blockquote>
+<div><p>本协议用于 SDC-LE-05 / SDC-LE-02HS / SDC-LE-02HD 蓝牙模组与跑步机 / 健身车等器材 MCU 之间的串口通信。</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="id2">
+<h2>1. 角色与拓扑<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>手机 APP ──BLE(FTMS/Device Info/自定义服务)── 本模组 ──UART── 跑步机/健身车 MCU
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>本模组 = 串口协议的<strong>主动方</strong>：周期性向器材 MCU 轮询状态、下发控制命令。</p></li>
+<li><p>器材 MCU = 串口协议的<strong>应答方</strong>：收到命令后回帧，或按需主动上报状态。</p></li>
+<li><p>模组把器材发来的合法帧透传到 BLE 通知特征 <code class="docutils literal notranslate"><span class="pre">FFF1</span></code>；APP 也可从 <code class="docutils literal notranslate"><span class="pre">FFF2</span></code> 写入原始字节，经模组直接下发到串口。</p></li>
+<li><p>器材端应丢弃所有不符合第 3 章帧格式的字节，不要对长度不足或帧头帧尾不匹配的数据做任何响应。</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>2. 串口参数<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>电平</p></td>
+<td><p>见 2.1 电平兼容说明</p></td>
+</tr>
+<tr class="row-odd"><td><p>串口引脚</p></td>
+<td><p>RX / TX（具体引脚定义见模组规格书）</p></td>
+</tr>
+<tr class="row-even"><td><p>数据位</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>校验位</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>停止位</p></td>
+<td><p><strong>1</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>默认波特率</p></td>
+<td><p>9600</p></td>
+</tr>
+<tr class="row-even"><td><p>流控</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>串口参数为 <strong>9600 / 8 / N / 1</strong>（8N1）。模组仅发送侧配置停止位，接收侧没有停止位配置项，按常规方式采样；器材按 8N1 配置即可正常互通。</p>
+</div></blockquote>
+<section id="id4">
+<h3>2.1 电平兼容说明<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>模组型号</p></th>
+<th class="head"><p>串口电平</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SDC-LE-05</p></td>
+<td><p>TTL 3.3 V，器材侧 TX 电平须为 3.3 V，不可直接接 5 V</p></td>
+</tr>
+<tr class="row-odd"><td><p>SDC-LE-02HS</p></td>
+<td><p>3.3~5 V 兼容，可直接与 3.3 V 或 5 V 的器材 MCU 连接</p></td>
+</tr>
+<tr class="row-even"><td><p>SDC-LE-02HD</p></td>
+<td><p>3.3~5 V 兼容，可直接与 3.3 V 或 5 V 的器材 MCU 连接</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>协议帧格式、命令与时序在三款型号上完全一致，仅电平范围不同。</p></li>
+<li><p>5 V 器材接 SDC-LE-05 时需加电平转换，其余情况无需转换。</p></li>
+<li><p>电源与电平为两套指标，供电电压请按各自规格书执行。</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>2.2 波特率自适应<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h3>
+<p>上电后模组会按固定列表逐个尝试波特率并发送「获取设备信息」命令，器材 <strong>必须在 500 ms 内回复</strong> 才能锁定波特率：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">4096</span><span class="p">,</span> <span class="mi">4800</span><span class="p">,</span> <span class="mi">9600</span><span class="p">,</span> <span class="mi">14400</span><span class="p">,</span> <span class="mi">19200</span><span class="p">,</span> <span class="mi">38400</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span> <span class="mi">115200</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>每 500 ms 切换一次，一圈约 4 s，未锁定则一直循环。</p></li>
+<li><p>上电时序：初始化约 500 ms 后发出第一帧 <code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">00</span> <span class="pre">50</span> <span class="pre">03</span></code>（此时工作在波特率列表第 1 项 <code class="docutils literal notranslate"><span class="pre">4096</span></code>）。若器材固定 9600，需等扫描列表走到第 3 项才能解出 <code class="docutils literal notranslate"><span class="pre">50-00</span></code>，即上电后约 1.5 s 收到第一帧有效请求。</p></li>
+<li><p>锁定后先做「获取坡度参数」，收到应答即开始 500 ms 周期轮询；随后再做「获取速度参数」。</p></li>
+<li><p>兼容建议：器材侧直接固定 9600 即可（<code class="docutils literal notranslate"><span class="pre">4096</span></code> 为非常规值，器材不应答属正常）；此时上电约 1.5 s 完成波特率锁定。</p></li>
+<li><p>握手只在模组上电时进行一次：锁定后模组不会再次下发 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> / <code class="docutils literal notranslate"><span class="pre">50-03</span></code> / <code class="docutils literal notranslate"><span class="pre">50-02</span></code>。若器材 MCU 中途复位而模组未复位，器材需自行恢复已协商的参数（或让模组重新上电），否则单位、坡度与速度范围将按旧值解释。</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h2>3. 帧格式<a class="headerlink" href="#id6" title="链接到此标题。">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+------+--------+--------+------+----------+------+------+</span>
+<span class="o">|</span> <span class="mh">0x02</span> <span class="o">|</span> <span class="n">CMD</span>    <span class="o">|</span> <span class="p">[</span><span class="n">SCMD</span><span class="p">]</span> <span class="o">|</span> <span class="n">DATA</span> <span class="o">|</span>   <span class="n">FCS</span>    <span class="o">|</span> <span class="mh">0x03</span> <span class="o">|</span>      <span class="o">|</span>
+<span class="o">+------+--------+--------+------+----------+------+------+</span>
+  <span class="n">帧头</span>   <span class="n">命令码</span>   <span class="n">子命令</span>   <span class="n">数据</span>   <span class="mi">1</span> <span class="n">字节校验</span>  <span class="n">帧尾</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>起始码（STX），固定</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMD</span></code></p></td>
+<td><p>命令码，1 字节</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SCMD</span></code></p></td>
+<td><p>子命令码，1 字节，仅双字节命令存在</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span></code></p></td>
+<td><p>数据区，0~N 字节，多字节数值一律<strong>小端</strong>（低字节在前），除非单独说明</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FCS</span></code></p></td>
+<td><p>校验：<code class="docutils literal notranslate"><span class="pre">CMD</span></code>、<code class="docutils literal notranslate"><span class="pre">SCMD</span></code>、<code class="docutils literal notranslate"><span class="pre">DATA</span></code> 全部字节<strong>逐字节异或</strong>（不含 <code class="docutils literal notranslate"><span class="pre">0x02</span></code>、不含 <code class="docutils literal notranslate"><span class="pre">0x03</span></code>）</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>结束码（ETX），固定</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id7">
+<h3>3.1 校验算法<a class="headerlink" href="#id7" title="链接到此标题。">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">fcs_calc</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">fcs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">fcs</span><span class="w"> </span><span class="o">^=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">fcs</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 传入 CMD 起始位置、长度 = 帧长 - 3（去掉 0x02、FCS、0x03 三个字节）</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>3.2 长度与约束<a class="headerlink" href="#id8" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>限制</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>最小有效帧</p></td>
+<td><p>4 字节（<code class="docutils literal notranslate"><span class="pre">0x02</span> <span class="pre">CMD</span> <span class="pre">FCS</span> <span class="pre">0x03</span></code>，无数据）</p></td>
+</tr>
+<tr class="row-odd"><td><p>单段接收</p></td>
+<td><p>最多 <strong>40 字节</strong>，超出部分被截断</p></td>
+</tr>
+<tr class="row-even"><td><p>发送缓冲</p></td>
+<td><p>40 字节/帧，超出部分被截断</p></td>
+</tr>
+<tr class="row-odd"><td><p>转发到 APP</p></td>
+<td><p>帧长 ≤ 当前 BLE 单包上限（默认 20 字节，MTU 协商后放大）时才会转发</p></td>
+</tr>
+<tr class="row-even"><td><p>未识别命令</p></td>
+<td><p>静默忽略（不回复错误帧）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h3>3.3 示例<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>含义</p></th>
+<th class="head"><p>报文</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>模组 → 器材：获取设备信息</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">00</span> <span class="pre">50</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>模组 → 器材：获取设备状态</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">51</span> <span class="pre">51</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>器材 → 模组：运行中 5.2 km/h、坡度 3、1181 s、1057 m、74.7 kcal、步数 0、心率 0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">51</span> <span class="pre">03</span> <span class="pre">34</span> <span class="pre">03</span> <span class="pre">9D</span> <span class="pre">04</span> <span class="pre">21</span> <span class="pre">04</span> <span class="pre">EB</span> <span class="pre">02</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">30</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>模组 → 器材：启动</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">53</span> <span class="pre">01</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">52</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>模组 → 器材：设置 6.0 km/h、坡度 5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">53</span> <span class="pre">02</span> <span class="pre">3C</span> <span class="pre">05</span> <span class="pre">68</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>模组 → 器材：停止</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">53</span> <span class="pre">03</span> <span class="pre">50</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>模组 → 器材：恢复运动</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">53</span> <span class="pre">09</span> <span class="pre">5A</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>模组 → 器材：暂停</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">53</span> <span class="pre">0A</span> <span class="pre">59</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>器材 → 模组：请求模组重启</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">60</span> <span class="pre">0A</span> <span class="pre">6A</span> <span class="pre">03</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2>4. 时序 / 交互要求<a class="headerlink" href="#id10" title="链接到此标题。">¶</a></h2>
+<section id="id11">
+<h3>4.1 模组侧调度节拍<a class="headerlink" href="#id11" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>任务</p></th>
+<th class="head"><p>周期</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>波特率扫描</p></td>
+<td><p>500 ms</p></td>
+<td><p>未锁定时，每 500 ms 换一个波特率发 <code class="docutils literal notranslate"><span class="pre">50-00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>参数获取</p></td>
+<td><p>500 ms</p></td>
+<td><p>锁定后先发 <code class="docutils literal notranslate"><span class="pre">50-03</span></code>，未应答则每 500 ms 重发；收到应答后再发 <code class="docutils literal notranslate"><span class="pre">50-02</span></code>，同样重发至应答</p></td>
+</tr>
+<tr class="row-even"><td><p>状态轮询 <code class="docutils literal notranslate"><span class="pre">0x51</span></code></p></td>
+<td><p>500 ms</p></td>
+<td><p><strong><code class="docutils literal notranslate"><span class="pre">50-03</span></code> 应答后立即开始</strong>（此时 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 可能仍在重发），且仅当 APP（BLE）已连接时才发</p></td>
+</tr>
+<tr class="row-odd"><td><p>发送帧</p></td>
+<td><p>100 ms</p></td>
+<td><p>模组每 100 ms 取出一帧发出，发完才处理下一帧</p></td>
+</tr>
+<tr class="row-even"><td><p>接收解析</p></td>
+<td><p>50 ms</p></td>
+<td><p>模组每 50 ms 处理一段接收数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>接收缓冲</p></td>
+<td><p>5 段</p></td>
+<td><p>缓冲满后新数据可能覆盖未处理数据，请遵守 4.2 的帧间隔</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>因此器材侧最关键的两个应答是 <code class="docutils literal notranslate"><span class="pre">50-00</span></code>（定位波特率）与 <code class="docutils literal notranslate"><span class="pre">50-03</span></code>（解锁状态轮询）。缺 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 模组会一直切换波特率；缺 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 则永远不会发出 <code class="docutils literal notranslate"><span class="pre">0x51</span></code>。缺 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 只会让速度范围被反复请求，轮询不受影响。</p>
+</div></blockquote>
+</section>
+<section id="id12">
+<h3>4.2 帧间隔建议<a class="headerlink" href="#id12" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>场景</p></th>
+<th class="head"><p>建议</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>单帧应答</p></td>
+<td><p>收到请求后 <strong>≥ 10 ms</strong> 再回复</p></td>
+</tr>
+<tr class="row-odd"><td><p>连续多帧发送</p></td>
+<td><p>帧间隔 ≥ 10 ms，平均每帧 ≥ 50 ms</p></td>
+</tr>
+<tr class="row-even"><td><p>短突发（≤5 帧）</p></td>
+<td><p>突发后空闲 ≥ 250 ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>单帧长度</p></td>
+<td><p>≤ 40 字节（转发到 APP 建议 ≤ 20 字节）</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>9600 bps、8N1 下每字节约 1.04 ms，一个 40 字节帧在线上约占用 42 ms，请对端留出裕量。</p>
+</div></blockquote>
+<blockquote>
+<div><p>模组采用串口空闲超时判定帧边界：两帧贴合过近会被当作同一段数据，导致首尾校验失败而整包丢弃。</p>
+</div></blockquote>
+<blockquote>
+<div><p>模组接收缓冲共 5 段，连续发送超过 5 帧且间隔过密时，最早的帧会被覆盖丢弃。</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h2>5. 命令总览<a class="headerlink" href="#id13" title="链接到此标题。">¶</a></h2>
+<blockquote>
+<div><p>部分命令码会在两个方向出现（如 <code class="docutils literal notranslate"><span class="pre">0x50</span></code>、<code class="docutils literal notranslate"><span class="pre">0x44-C3</span></code>），方向由发起方决定，格式相同。下表按下发方向归类。</p>
+</div></blockquote>
+<section id="id14">
+<h3>5.1 模组 → 器材（下行）<a class="headerlink" href="#id14" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CMD</p></th>
+<th class="head"><p>SCMD</p></th>
+<th class="head"><p>名称</p></th>
+<th class="head"><p>数据区</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+<td><p>获取设备信息</p></td>
+<td><p>无</p></td>
+<td><p>波特率锁定 + 能力协商入口，<strong>器材必须应答</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>获取速度参数</p></td>
+<td><p>无</p></td>
+<td><p>应答见 6.2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>获取坡度参数</p></td>
+<td><p>无</p></td>
+<td><p>应答见 6.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x51</span></code></p></td>
+<td><p>-</p></td>
+<td><p>获取设备状态/数据</p></td>
+<td><p>无</p></td>
+<td><p>500 ms 周期轮询，应答见 6.4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x01</span></code></p></td>
+<td><p>设备启动</p></td>
+<td><p>8 字节，预留</p></td>
+<td><p>APP 点击「开始」时下发，表示启动；数据区为协议预留，器材可忽略</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>设置速度与坡度</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[速度,</span> <span class="pre">坡度]</span></code></p></td>
+<td><p>速度 0.1 km/h（英制时 0.1 mph），坡度 1 %；两组值总是同时下发，未被调整的那个字段填器材当前值</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>停止</p></td>
+<td><p>无</p></td>
+<td><p>FTMS 停止指令参数 = 0x01</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x09</span></code></p></td>
+<td><p>恢复/开始运动</p></td>
+<td><p>无</p></td>
+<td><p>APP 每次点「开始」时下发</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x0A</span></code></p></td>
+<td><p>暂停</p></td>
+<td><p>无</p></td>
+<td><p>FTMS 停止指令参数 = 0x02</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x53</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x9F</span></code></p></td>
+<td><p>扩展数据</p></td>
+<td><p>原始透传</p></td>
+<td><p>扩展协议数据，<code class="docutils literal notranslate"><span class="pre">DATA[0..1]</span></code> 为 flags（小端），详见 6.8。<strong>当前 APP 未使用，可忽略</strong></p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>注意：<code class="docutils literal notranslate"><span class="pre">0x53</span></code> 类命令为模组 <strong>下发专用</strong>，器材侧无需应答；器材上行请使用 5.2 节列出的命令。</p>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>5.2 器材 → 模组（上行）<a class="headerlink" href="#id15" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CMD</p></th>
+<th class="head"><p>SCMD</p></th>
+<th class="head"><p>名称</p></th>
+<th class="head"><p>数据区</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+<td><p>设备信息应答</p></td>
+<td><p>4 或 6 字节</p></td>
+<td><p>见 6.1，同时用于锁定波特率</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>速度参数应答</p></td>
+<td><p>2 或 4 字节</p></td>
+<td><p>见 6.2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>坡度参数应答</p></td>
+<td><p>3 字节</p></td>
+<td><p>见 6.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x51</span></code></p></td>
+<td><p>-</p></td>
+<td><p>状态/数据应答</p></td>
+<td><p>1 / 2 / 13 / 14 字节</p></td>
+<td><p>见 6.4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC3</span></code></p></td>
+<td><p>查询 APP 连接状态</p></td>
+<td><p>无</p></td>
+<td><p>模组回 1 字节：0=未连接，1=已连接</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC5</span></code></p></td>
+<td><p>查询 BLE 名称</p></td>
+<td><p>无</p></td>
+<td><p>回 ASCII 名称</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC6</span></code></p></td>
+<td><p>查询 BLE MAC</p></td>
+<td><p>无</p></td>
+<td><p>回 6 字节 BD_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC7</span></code></p></td>
+<td><p>修改 BLE 名称</p></td>
+<td><p>1~29 字节 ASCII</p></td>
+<td><p>成功回 1 字节 <code class="docutils literal notranslate"><span class="pre">0x00</span></code>，立即生效</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC8</span></code></p></td>
+<td><p>修改音频(经典蓝牙)名称</p></td>
+<td><p>1~29 字节 ASCII</p></td>
+<td><p>成功回 1 字节 <code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xC9</span></code></p></td>
+<td><p>查询设备型号</p></td>
+<td><p>无</p></td>
+<td><p>回 ASCII 型号字符串</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xCA</span></code></p></td>
+<td><p>查询 SN</p></td>
+<td><p>无</p></td>
+<td><p>回 ASCII SN 字符串</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xCB</span></code></p></td>
+<td><p>查询音频状态</p></td>
+<td><p>无</p></td>
+<td><p>回 2 字节 <code class="docutils literal notranslate"><span class="pre">[连接状态,</span> <span class="pre">播放状态]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x44</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0xD1</span></code></p></td>
+<td><p>查询音频(经典蓝牙)名称</p></td>
+<td><p>无</p></td>
+<td><p>回 ASCII 名称</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x60</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x0A</span></code></p></td>
+<td><p>请求模组重启</p></td>
+<td><p>无</p></td>
+<td><p>模组立即复位重启，无应答</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x01</span></code></p></td>
+<td><p>播放/暂停</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>停止播放</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>下一首</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x04</span></code></p></td>
+<td><p>上一首</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x0B</span></code></p></td>
+<td><p>音量 +</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x62</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x0C</span></code></p></td>
+<td><p>音量 -</p></td>
+<td><p>无</p></td>
+<td><p>无应答</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h2>6. 应答与数据格式详解<a class="headerlink" href="#id16" title="链接到此标题。">¶</a></h2>
+<p>本章对第 5 章出现的每条命令逐一说明。6.1~6.7 为器材需要回复或执行的命令，6.8 为模组下发命令的数据格式。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>命令</p></th>
+<th class="head"><p>方向</p></th>
+<th class="head"><p>章节</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">50-00</span></code> 获取设备信息</p></td>
+<td><p>模组 → 器材，器材应答</p></td>
+<td><p>6.1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">50-02</span></code> 获取速度参数</p></td>
+<td><p>模组 → 器材，器材应答</p></td>
+<td><p>6.2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">50-03</span></code> 获取坡度参数</p></td>
+<td><p>模组 → 器材，器材应答</p></td>
+<td><p>6.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">51</span></code> 获取设备状态/数据</p></td>
+<td><p>模组 → 器材，器材应答</p></td>
+<td><p>6.4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">44-C3</span></code> 查询 APP 连接状态</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">44-C5</span></code> 查询 BLE 名称</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">44-C6</span></code> 查询 BLE MAC</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">44-C7</span></code> 修改 BLE 名称</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">44-D1</span></code> 查询音频名称</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">44-C8</span></code> 修改音频名称</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.6</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">44-C9</span></code> 查询设备型号</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.7</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">44-CA</span></code> 查询 SN</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.8</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">44-CB</span></code> 查询音频状态</p></td>
+<td><p>器材 → 模组，模组应答</p></td>
+<td><p>6.5.9</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">60-0A</span></code> 请求模组重启</p></td>
+<td><p>器材 → 模组，无应答</p></td>
+<td><p>6.6</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">62-01</span></code>~<code class="docutils literal notranslate"><span class="pre">62-0C</span></code> 音频控制</p></td>
+<td><p>器材 → 模组，无应答</p></td>
+<td><p>6.7</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">53-9F</span></code> 扩展数据</p></td>
+<td><p>模组 → 器材，无应答</p></td>
+<td><p>6.8</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id17">
+<h3>6.1 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 设备信息<a class="headerlink" href="#id17" title="链接到此标题。">¶</a></h3>
+<p>数据区支持两种长度：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>长度</p></th>
+<th class="head"><p>字段</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[厂商码</span> <span class="pre">W][机型码</span> <span class="pre">W]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[类型</span> <span class="pre">W][厂商码</span> <span class="pre">W][机型码</span> <span class="pre">W]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>全部小端。</p></li>
+<li><p>器材回复此帧即视为波特率锁定成功。</p></li>
+<li><p>示例（厂商码 0x1234，机型码 0x5678）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">00</span> <span class="pre">34</span> <span class="pre">12</span> <span class="pre">78</span> <span class="pre">56</span> <span class="pre">58</span> <span class="pre">03</span></code></p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数<a class="headerlink" href="#id18" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>长度</p></th>
+<th class="head"><p>字段</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[最大速度(B)][最小速度(B)]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[最大速度(W)][最小速度(W)]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>单位：0.1 km/h</strong>（例：<code class="docutils literal notranslate"><span class="pre">0x78</span></code> = 120 → 12.0 km/h）；若 6.3 节 <code class="docutils literal notranslate"><span class="pre">bit0</span> <span class="pre">=</span> <span class="pre">1</span></code>（英制），则单位变为 <strong>0.1 mph</strong>。</p></li>
+<li><p>模组内部统一换算成公制 FTMS 数值（速度 ×10 → 0.01 km/h，英制自动 ×1.61 转公里）。</p></li>
+<li><p>最小增量由模组按 0.1 km/h 固定处理，无需器材上报；<strong>推荐使用 2 字节长度应答</strong>，4 字节长度下模组不保证最小增量字段的值。</p></li>
+<li><p>示例（最大 12.0、最小 1.0）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">02</span> <span class="pre">78</span> <span class="pre">0A</span> <span class="pre">20</span> <span class="pre">03</span></code></p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数<a class="headerlink" href="#id19" title="链接到此标题。">¶</a></h3>
+<p>数据区固定 3 字节：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>偏移</p></th>
+<th class="head"><p>字段</p></th>
+<th class="head"><p>单位</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>最大坡度</p></td>
+<td><p>1 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>最小坡度</p></td>
+<td><p>1 %</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>配置参数表</p></td>
+<td><p>位域，见下</p></td>
+</tr>
+</tbody>
+</table>
+<p>配置参数表 <code class="docutils literal notranslate"><span class="pre">DATA[2]</span></code>：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>位</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bit0</p></td>
+<td><p>计量单位：0 = 公制（km / km/h），1 = 英制（mile / mph）</p></td>
+</tr>
+<tr class="row-odd"><td><p>bit1</p></td>
+<td><p>支持暂停</p></td>
+</tr>
+<tr class="row-even"><td><p>bit2</p></td>
+<td><p>支持心率预警</p></td>
+</tr>
+<tr class="row-odd"><td><p>bit3~7</p></td>
+<td><p>保留，填 0</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">bit0</span></code> 是<strong>全局单位开关</strong>：置 1 后，6.2 节的速度参数、6.4 节的速度与距离字段均按英制（0.1 mph、0.001 / 0.01 mile）解释，模组内部再换算为公制 FTMS 数值。</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>若最大坡度 ≠ 最小坡度，模组会向 APP 声明支持坡度控制。</p></li>
+<li><p>心率范围由模组固定声明为 0~250，步进 1，无需器材上报。</p></li>
+<li><p>示例（0~15%，公制）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">03</span> <span class="pre">0F</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">5C</span> <span class="pre">03</span></code></p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据<a class="headerlink" href="#id20" title="链接到此标题。">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DATA[0]</span></code> 为设备状态：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>状态</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+<td><p>待机 Idle</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x01</span></code></p></td>
+<td><p>停机 Stop</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x02</span></code></p></td>
+<td><p>倒计时启动</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></td>
+<td><p>运行中 Running</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x04</span></code></p></td>
+<td><p>减速停止</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x05</span></code></p></td>
+<td><p>故障</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x06</span></code></p></td>
+<td><p>禁用</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x0A</span></code></p></td>
+<td><p>暂停</p></td>
+</tr>
+</tbody>
+</table>
+<p>按状态选择数据长度：</p>
+<section id="a-1">
+<h4>(a) 待机 —— 长度 1<a class="headerlink" href="#a-1" title="链接到此标题。">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">[0x00]</span></code></p>
+<ul class="simple">
+<li><p>模组收到后清空已保存的运动数据。</p></li>
+<li><p>待机也允许携带完整数据（长度 13/14），部分器材待机时仍上报数据。</p></li>
+</ul>
+</section>
+<section id="b-2">
+<h4>(b) 倒计时启动 —— 长度 2<a class="headerlink" href="#b-2" title="链接到此标题。">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">[0x02][倒计时秒数]</span></code></p>
+</section>
+<section id="c-2">
+<h4>(c) 故障 —— 长度 2<a class="headerlink" href="#c-2" title="链接到此标题。">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">[0x05][故障码]</span></code></p>
+</section>
+<section id="d-2">
+<h4>(d) 禁用 —— 长度 2<a class="headerlink" href="#d-2" title="链接到此标题。">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">[0x06][禁用码]</span></code>，禁用码：1 = 安全锁脱落，2 = 设备睡眠。</p>
+</section>
+<section id="e-13-8">
+<h4>(e) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 13（8 位速度）<a class="headerlink" href="#e-13-8" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>偏移</p></th>
+<th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>单位</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>状态</p></td>
+<td><p>B</p></td>
+<td><p>见上表</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>速度</p></td>
+<td><p>B</p></td>
+<td><p><strong>0.1 km/h</strong>；英制时为 <strong>0.1 mph</strong>（见 6.3 <code class="docutils literal notranslate"><span class="pre">bit0</span></code>）</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>坡度</p></td>
+<td><p>B</p></td>
+<td><p>1 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>3~4</p></td>
+<td><p>时间</p></td>
+<td><p>W</p></td>
+<td><p>s</p></td>
+</tr>
+<tr class="row-even"><td><p>5~6</p></td>
+<td><p>距离</p></td>
+<td><p>W</p></td>
+<td><p>见下方说明</p></td>
+</tr>
+<tr class="row-odd"><td><p>7~8</p></td>
+<td><p>热量</p></td>
+<td><p>W</p></td>
+<td><p><strong>0.1 kcal</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>9~10</p></td>
+<td><p>步数</p></td>
+<td><p>W</p></td>
+<td><p>步</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>心率</p></td>
+<td><p>B</p></td>
+<td><p>次/分，无该数据时填 0</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>预留</p></td>
+<td><p>B</p></td>
+<td><p>填 0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="f-14-16">
+<h4>(f) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 14（16 位速度）<a class="headerlink" href="#f-14-16" title="链接到此标题。">¶</a></h4>
+<p>与 (e) 相同，仅速度变为 2 字节小端（0.1 km/h，英制时 0.1 mph），其后字段整体后移 1 字节。</p>
+</section>
+<section id="id21">
+<h4>距离字段说明<a class="headerlink" href="#id21" title="链接到此标题。">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bit15</span></code>（<code class="docutils literal notranslate"><span class="pre">0x8000</span></code>）为<strong>分辨率标志</strong>，低 15 位为有效数值：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">bit15</span> <span class="pre">=</span> <span class="pre">0</span></code>：单位 0.001（公制为米，英制为 mile）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bit15</span> <span class="pre">=</span> <span class="pre">1</span></code>：单位 0.01（公制为 10 米，英制为 0.01 mile）。</p></li>
+</ul>
+</li>
+<li><p>距离单位随 6.3 节 <code class="docutils literal notranslate"><span class="pre">bit0</span></code> 配置：公制按 km，英制按 mile，器材不要换算成公制后再填。</p></li>
+<li><p>模组统一换算为米后上报 FTMS：公制按上表系数换算；英制 <code class="docutils literal notranslate"><span class="pre">bit15</span> <span class="pre">=</span> <span class="pre">0</span></code> 时 ×1.61，<code class="docutils literal notranslate"><span class="pre">bit15</span> <span class="pre">=</span> <span class="pre">1</span></code> 时 ×16.1。</p></li>
+<li><p>例（公制）：<code class="docutils literal notranslate"><span class="pre">0x0421</span></code> → 1057 → 1057 m ≈ 1.057 km。</p></li>
+</ul>
+</section>
+</section>
+<section id="xx">
+<h3>6.5 <code class="docutils literal notranslate"><span class="pre">44-xx</span></code> 信息服务<a class="headerlink" href="#xx" title="链接到此标题。">¶</a></h3>
+<p>本组命令均为器材发起查询/设置，模组应答。请求帧的 DATA 区必须为空（<code class="docutils literal notranslate"><span class="pre">44-C7</span></code>、<code class="docutils literal notranslate"><span class="pre">44-C8</span></code> 除外），否则模组静默丢弃。</p>
+<section id="c3-app">
+<h4>6.5.1 <code class="docutils literal notranslate"><span class="pre">44-C3</span></code> 查询 APP 连接状态<a class="headerlink" href="#c3-app" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>1 字节：<code class="docutils literal notranslate"><span class="pre">0x00</span></code> = 未连接，<code class="docutils literal notranslate"><span class="pre">0x01</span></code> = 已连接</p></td>
+</tr>
+<tr class="row-even"><td><p>判定依据</p></td>
+<td><p>APP 已连接或已配对均视为已连接</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C3 87 03
+应答：02 44 C3 01 86 03      // APP 已连接
+</pre></div>
+</div>
+<p>此外，APP 连接或断开时模组会<strong>主动上报</strong>一次，器材需能异步接收；该主动上报与 <code class="docutils literal notranslate"><span class="pre">0x51</span></code> 轮询同时解锁。</p>
+</section>
+<section id="c5-ble">
+<h4>6.5.2 <code class="docutils literal notranslate"><span class="pre">44-C5</span></code> 查询 BLE 名称<a class="headerlink" href="#c5-ble" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>ASCII 字符串，长度 = 实际字符数（不含结束符）</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C5 81 03
+应答：02 44 C5 47 59 4D 2D 44 35 45 36 FD 03   // &quot;GYM-D5E6&quot;
+</pre></div>
+</div>
+<p>出厂默认名称为「前缀-XXXX」：前缀由模组出厂配置决定，<code class="docutils literal notranslate"><span class="pre">XXXX</span></code> 为 <code class="docutils literal notranslate"><span class="pre">44-C6</span></code> 应答中 <code class="docutils literal notranslate"><span class="pre">DATA[4]</span></code>、<code class="docutils literal notranslate"><span class="pre">DATA[5]</span></code> 的十六进制大写；经 <code class="docutils literal notranslate"><span class="pre">44-C7</span></code> 修改后返回设定值。</p>
+</section>
+<section id="c6-ble-mac">
+<h4>6.5.3 <code class="docutils literal notranslate"><span class="pre">44-C6</span></code> 查询 BLE MAC<a class="headerlink" href="#c6-ble-mac" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>6 字节 BD_ADDR，<code class="docutils literal notranslate"><span class="pre">DATA[0]</span></code> 为首字节，顺序与手机扫描到的 MAC 显示顺序一致</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C6 82 03
+应答：02 44 C6 A1 A2 B3 C4 D5 E6 C5 03
+</pre></div>
+</div>
+<p>上例对应手机扫描到的 MAC 为 <code class="docutils literal notranslate"><span class="pre">A1:A2:B3:C4:D5:E6</span></code>。</p>
+</section>
+<section id="c7-ble">
+<h4>6.5.4 <code class="docutils literal notranslate"><span class="pre">44-C7</span></code> 修改 BLE 名称<a class="headerlink" href="#c7-ble" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>1~29 字节 ASCII，即新名称（超过 29 字节会被截断）</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>1 字节 <code class="docutils literal notranslate"><span class="pre">0x00</span></code> 表示成功</p></td>
+</tr>
+<tr class="row-even"><td><p>异常</p></td>
+<td><p>DATA 为空或超过 30 字节时模组静默丢弃，不应答</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C7 47 59 4D 2D 44 35 45 36 FF 03   // 设为 &quot;GYM-D5E6&quot;
+应答：02 44 C7 00 83 03
+</pre></div>
+</div>
+<p>写入后立即生效并刷新 BLE 广播，无需重启。名称长度受 BLE 广播包容量限制，建议不超过 20 字节。</p>
+</section>
+<section id="d1">
+<h4>6.5.5 <code class="docutils literal notranslate"><span class="pre">44-D1</span></code> 查询音频（经典蓝牙）名称<a class="headerlink" href="#d1" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>ASCII 字符串，长度 = 实际字符数</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 D1 95 03
+应答：02 44 D1 47 59 4D 2D 44 35 45 36 5F 41 75 64 69 6F E0 03   // &quot;GYM-D5E6_Audio&quot;
+</pre></div>
+</div>
+<p>出厂默认名称为「前缀-XXXX_Audio」，后缀规则与 <code class="docutils literal notranslate"><span class="pre">44-C5</span></code> 相同，经 <code class="docutils literal notranslate"><span class="pre">44-C8</span></code> 修改后返回设定值。</p>
+</section>
+<section id="c8">
+<h4>6.5.6 <code class="docutils literal notranslate"><span class="pre">44-C8</span></code> 修改音频名称<a class="headerlink" href="#c8" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>1~29 字节 ASCII，即新名称（超过 29 字节会被截断）</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>1 字节 <code class="docutils literal notranslate"><span class="pre">0x00</span></code> 表示成功</p></td>
+</tr>
+<tr class="row-even"><td><p>异常</p></td>
+<td><p>DATA 为空或超过 30 字节时模组静默丢弃，不应答</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C8 47 59 4D 2D 44 35 45 36 5F 41 75 64 69 6F F9 03
+应答：02 44 C8 00 8C 03
+</pre></div>
+</div>
+<p>写入后立即生效，无需重启。</p>
+</section>
+<section id="c9">
+<h4>6.5.7 <code class="docutils literal notranslate"><span class="pre">44-C9</span></code> 查询设备型号<a class="headerlink" href="#c9" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>ASCII 字符串，为模组硬件型号的固定值，长度 = 实际字符数</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 C9 8D 03
+应答：02 44 C9 53 44 43 2D 4C 45 2D 30 35 D5 03   // &quot;SDC-LE-05&quot;
+</pre></div>
+</div>
+</section>
+<section id="ca-sn">
+<h4>6.5.8 <code class="docutils literal notranslate"><span class="pre">44-CA</span></code> 查询 SN<a class="headerlink" href="#ca-sn" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>ASCII 字符串，固定 17 字符</p></td>
+</tr>
+</tbody>
+</table>
+<p>SN 由模组出厂参数生成，与器材无关，结构如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>偏移</p></th>
+<th class="head"><p>长度</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0~1</p></td>
+<td><p>2</p></td>
+<td><p>品类码（<code class="docutils literal notranslate"><span class="pre">RM</span></code> = 跑步机，<code class="docutils literal notranslate"><span class="pre">IN</span></code> = 健身车）</p></td>
+</tr>
+<tr class="row-odd"><td><p>2~7</p></td>
+<td><p>6</p></td>
+<td><p>厂家编码，未配置时全为 <code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>8~9</p></td>
+<td><p>2</p></td>
+<td><p>生产年份（两位）</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>1</p></td>
+<td><p>生产月份（1~9 为数字，10~12 为 <code class="docutils literal notranslate"><span class="pre">A</span></code>~<code class="docutils literal notranslate"><span class="pre">C</span></code>）</p></td>
+</tr>
+<tr class="row-even"><td><p>11~16</p></td>
+<td><p>6</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">44-C6</span></code> 应答中 <code class="docutils literal notranslate"><span class="pre">DATA[3]</span></code>、<code class="docutils literal notranslate"><span class="pre">DATA[4]</span></code>、<code class="docutils literal notranslate"><span class="pre">DATA[5]</span></code> 依次转十六进制大写</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 CA 8E 03
+应答：02 44 CA 52 4D 30 30 30 30 30 30 32 35 41 43 34 44 35 45 36 A2 03
+      // &quot;RM00000025AC4D5E6&quot;（17 字符，与上例 MAC 对应）
+</pre></div>
+</div>
+</section>
+<section id="cb">
+<h4>6.5.9 <code class="docutils literal notranslate"><span class="pre">44-CB</span></code> 查询音频状态<a class="headerlink" href="#cb" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答 DATA</p></td>
+<td><p>2 字节：<code class="docutils literal notranslate"><span class="pre">[连接状态][播放状态]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字节</p></th>
+<th class="head"><p>取值</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DATA[0]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+<td><p>音频未连接</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATA[0]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x01</span></code></p></td>
+<td><p>音频已连接</p></td>
+</tr>
+<tr class="row-even"><td><p>DATA[1]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
+<td><p>未播放</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATA[1]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x01</span></code></p></td>
+<td><p>正在播放</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求：02 44 CB 8F 03
+应答：02 44 CB 01 01 8F 03      // 已连接且正在播放
+</pre></div>
+</div>
+</section>
+</section>
+<section id="a">
+<h3>6.6 <code class="docutils literal notranslate"><span class="pre">60-0A</span></code> 请求模组重启<a class="headerlink" href="#a" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求 DATA</p></td>
+<td><p>无（携带数据也会被忽略）</p></td>
+</tr>
+<tr class="row-odd"><td><p>应答</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">02</span> <span class="mi">60</span> <span class="mi">0</span><span class="n">A</span> <span class="mi">6</span><span class="n">A</span> <span class="mi">03</span>
+</pre></div>
+</div>
+<p>模组收到后立即复位，无应答，此前的 BLE 连接会断开。复位期间串口无任何输出，该时长取决于模组芯片启动，协议不做约定；复位完成后模组从零开始重新握手（同 2.2 节的上电时序），器材需重新应答 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> / <code class="docutils literal notranslate"><span class="pre">50-03</span></code> / <code class="docutils literal notranslate"><span class="pre">50-02</span></code>。</p>
+</section>
+<section id="id22">
+<h3>6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制<a class="headerlink" href="#id22" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CMD-SCMD</p></th>
+<th class="head"><p>功能</p></th>
+<th class="head"><p>示例帧</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">62-01</span></code></p></td>
+<td><p>播放 / 暂停（切换）</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">01</span> <span class="pre">63</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">62-02</span></code></p></td>
+<td><p>停止播放</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">02</span> <span class="pre">60</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">62-03</span></code></p></td>
+<td><p>下一首</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">03</span> <span class="pre">61</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">62-04</span></code></p></td>
+<td><p>上一首</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">04</span> <span class="pre">66</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">62-0B</span></code></p></td>
+<td><p>音量 +</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">0B</span> <span class="pre">69</span> <span class="pre">03</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">62-0C</span></code></p></td>
+<td><p>音量 -</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">62</span> <span class="pre">0C</span> <span class="pre">6E</span> <span class="pre">03</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>以上命令 DATA 区必须为空，携带数据时模组静默丢弃。</p></li>
+<li><p>全部为<strong>无应答</strong>的单向控制指令；执行结果通过 <code class="docutils literal notranslate"><span class="pre">44-CB</span></code> 查询音频状态获得。</p></li>
+<li><p>音频未连接时发送，模组不报错也不执行。</p></li>
+<li><p>音量范围由模组内部限制，到达上下限后继续加减无效。</p></li>
+</ul>
+</section>
+<section id="f">
+<h3>6.8 <code class="docutils literal notranslate"><span class="pre">53-9F</span></code> 扩展数据（模组 → 器材）<a class="headerlink" href="#f" title="链接到此标题。">¶</a></h3>
+<p>由 APP 的扩展特征值写入后整段下发，<code class="docutils literal notranslate"><span class="pre">DATA</span></code> 由 2 字节 flags 加若干字段组成，<strong>总长度必须为 3~35 字节</strong>（整帧不超过 40 字节）。</p>
+<p><strong>flags（2 字节，小端）</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>位</p></th>
+<th class="head"><p>含义</p></th>
+<th class="head"><p>对应后续字段</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bit0</p></td>
+<td><p>参数包含解锁码</p></td>
+<td><p>Unlock Code</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bit1</p></td>
+<td><p>参数包含心率</p></td>
+<td><p>Heart Rate</p></td>
+</tr>
+<tr class="row-even"><td><p>Bit2</p></td>
+<td><p>参数包含总卡路里</p></td>
+<td><p>Total Energy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bit3</p></td>
+<td><p>参数包含动态卡路里</p></td>
+<td><p>Dynamic Energy</p></td>
+</tr>
+<tr class="row-even"><td><p>Bit4</p></td>
+<td><p>参数包含计步</p></td>
+<td><p>Step Count</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bit5</p></td>
+<td><p>参数包含运行时间</p></td>
+<td><p>Running Time</p></td>
+</tr>
+<tr class="row-even"><td><p>Bit6</p></td>
+<td><p>参数包含 RGB 颜色码</p></td>
+<td><p>RGB Color</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bit7</p></td>
+<td><p>参数包含里程</p></td>
+<td><p>Distance</p></td>
+</tr>
+<tr class="row-even"><td><p>Bit8~Bit15</p></td>
+<td><p>保留</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>字段排列</strong></p>
+<p>各字段按 flags 从 Bit0 起逐位顺序拼接，仅当对应位置 1 时才出现：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>格式</p></th>
+<th class="head"><p>长度</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Unlock Code</p></td>
+<td><p>—</p></td>
+<td><p>6 字节</p></td>
+<td><p>厂家自定义解锁码，由 <code class="docutils literal notranslate"><span class="pre">0</span></code>~<code class="docutils literal notranslate"><span class="pre">F</span></code> 的 6 个十六进制字符组成</p></td>
+</tr>
+<tr class="row-odd"><td><p>Heart Rate</p></td>
+<td><p>无符号</p></td>
+<td><p>1 字节</p></td>
+<td><p>心率值</p></td>
+</tr>
+<tr class="row-even"><td><p>Total Energy</p></td>
+<td><p>无符号，小端</p></td>
+<td><p>2 字节</p></td>
+<td><p>总卡路里</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dynamic Energy</p></td>
+<td><p>无符号，小端</p></td>
+<td><p>2 字节</p></td>
+<td><p>动态卡路里</p></td>
+</tr>
+<tr class="row-even"><td><p>Step Count</p></td>
+<td><p>无符号，小端</p></td>
+<td><p>2 字节</p></td>
+<td><p>实时步数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Running Time</p></td>
+<td><p>无符号，小端</p></td>
+<td><p>2 字节</p></td>
+<td><p>运行时间，单位秒</p></td>
+</tr>
+<tr class="row-even"><td><p>RGB Color</p></td>
+<td><p>3 字节</p></td>
+<td><p>3 字节</p></td>
+<td><p>依次为 G、B、R 三通道亮度值</p></td>
+</tr>
+<tr class="row-odd"><td><p>Distance</p></td>
+<td><p>无符号，小端 24 位</p></td>
+<td><p>3 字节</p></td>
+<td><p>运动里程，单位米</p></td>
+</tr>
+</tbody>
+</table>
+<p>例：含心率 120、总卡路里 300 时，<code class="docutils literal notranslate"><span class="pre">flags</span> <span class="pre">=</span> <span class="pre">0x0006</span></code>，完整帧为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">02</span> <span class="mi">53</span> <span class="mi">9</span><span class="n">F</span> <span class="mi">06</span> <span class="mi">00</span> <span class="mi">78</span> <span class="mi">2</span><span class="n">C</span> <span class="mi">01</span> <span class="mi">9</span><span class="n">F</span> <span class="mi">03</span>
+</pre></div>
+</div>
+<p><strong>约定</strong></p>
+<ul class="simple">
+<li><p>保留位填 0，模组会忽略未定义位对应的数据。</p></li>
+<li><p>长度 ≤ 2 字节时模组不会下发。</p></li>
+<li><p>器材若不需要该功能，可直接丢弃此帧（无应答）。</p></li>
+<li><p><strong>当前 APP 尚未使用该扩展数据</strong>：APP 不会主动写入此特征值，模组也不会主动下发 <code class="docutils literal notranslate"><span class="pre">53-9F</span></code>。上述字段定义仅为协议预留，器材收到时按上表解析即可，未收到属正常现象。</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id23">
+<h2>7. 典型交互流程<a class="headerlink" href="#id23" title="链接到此标题。">¶</a></h2>
+<pre  class="mermaid">
+        sequenceDiagram
+    participant M as 模组
+    participant E as 器材MCU
+    Note over M: 上电 500ms 一次扫描波特率
+    M-&gt;&gt;E: 02 50 00 50 03
+    E-&gt;&gt;M: 02 50 00 &lt;info&gt; FCS 03   (锁定波特率)
+    M-&gt;&gt;E: 02 50 03 FCS 03         (获取坡度参数)
+    E-&gt;&gt;M: 02 50 03 &lt;max,min,cfg&gt; FCS 03   (轮询自此解锁)
+    loop 每 500 ms（APP 已连接时，与下方 50-02 并行）
+        M-&gt;&gt;E: 02 51 51 03
+        E-&gt;&gt;M: 02 51 &lt;state+data&gt; FCS 03
+    end
+    M-&gt;&gt;E: 02 50 02 FCS 03         (获取速度参数)
+    E-&gt;&gt;M: 02 50 02 &lt;max,min&gt; FCS 03
+    Note over M: APP 点击开始
+    M-&gt;&gt;E: 02 53 01 00*8 52 03
+    M-&gt;&gt;E: 02 53 09 5A 03
+    Note over M: APP 设置速度/坡度
+    M-&gt;&gt;E: 02 53 02 &lt;speed, incline&gt; FCS 03
+    Note over M: APP 停止 / 暂停
+    M-&gt;&gt;E: 02 53 03 50 03 / 02 53 0A 59 03
+    </pre></section>
+<hr class="docutils" />
+<section id="id24">
+<h2>8. 关键注意事项<a class="headerlink" href="#id24" title="链接到此标题。">¶</a></h2>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">确认模组型号与电平匹配：SDC-LE-05 为 3.3 V，SDC-LE-02HS / SDC-LE-02HD 支持 3.3~5 V。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">8 数据位、无校验、<strong>1 停止位</strong>，波特率与模组锁定值一致。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">忽略任何不符合帧格式的数据（长度不足、帧头帧尾不匹配、FCS 错误）。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">收到 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 必须应答，否则模组会持续切换波特率（每 500 ms）。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">收到 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 必须应答，否则模组永远不会开始 <code class="docutils literal notranslate"><span class="pre">0x51</span></code> 轮询；<code class="docutils literal notranslate"><span class="pre">50-02</span></code> 也需应答，否则速度范围会被反复请求。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"><code class="docutils literal notranslate"><span class="pre">50-03</span></code> 应答后，<strong>只有 APP 连上 BLE 才会收到 <code class="docutils literal notranslate"><span class="pre">0x51</span></code> 轮询</strong>；调试时先用手机 BLE 连接。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">FCS 为 <code class="docutils literal notranslate"><span class="pre">CMD</span></code> 起至 <code class="docutils literal notranslate"><span class="pre">DATA</span></code> 末字节的异或，勿把 <code class="docutils literal notranslate"><span class="pre">0x02/0x03</span></code> 计入。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">所有多字节字段小端；<code class="docutils literal notranslate"><span class="pre">51</span></code> 的距离字段注意 <code class="docutils literal notranslate"><span class="pre">bit15</span></code> 分辨率标志。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"><code class="docutils literal notranslate"><span class="pre">50-03</span></code> 的 <code class="docutils literal notranslate"><span class="pre">bit0</span></code> 决定全局单位，切换英制后速度/距离按 mile 解释。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">帧长控制在 40 字节内，转发到 APP 建议 ≤ 20 字节。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">帧间至少留 10 ms 间隔，避免两帧被合并成一段导致整包丢弃。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">状态变化时可用 <code class="docutils literal notranslate"><span class="pre">51</span></code> 主动上报；模组也在 500 ms 轮询，二者不冲突。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">连续发送的帧数不超过 5 帧，且遵守 4.2 的帧间隔要求。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">握手只在模组上电时做一次；器材 MCU 单独复位后不会重新收到 <code class="docutils literal notranslate"><span class="pre">50-00/50-03/50-02</span></code>，需自行恢复参数或让模组一起复位。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">未识别命令静默忽略，不要依赖错误应答做重传。</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">名称类命令长度 1~29 字节，空名称会被拒绝。</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id25">
+<h2>修订记录<a class="headerlink" href="#id25" title="链接到此标题。">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>文档版本</p></th>
+<th class="head"><p>修订日期</p></th>
+<th class="head"><p>修订内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>V1.0</p></td>
+<td><p>2026-10-17</p></td>
+<td><p>首次发布</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">健身器材串口通信协议</a><ul>
+<li><a class="reference internal" href="#id2">1. 角色与拓扑</a></li>
+<li><a class="reference internal" href="#id3">2. 串口参数</a><ul>
+<li><a class="reference internal" href="#id4">2.1 电平兼容说明</a></li>
+<li><a class="reference internal" href="#id5">2.2 波特率自适应</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6">3. 帧格式</a><ul>
+<li><a class="reference internal" href="#id7">3.1 校验算法</a></li>
+<li><a class="reference internal" href="#id8">3.2 长度与约束</a></li>
+<li><a class="reference internal" href="#id9">3.3 示例</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">4. 时序 / 交互要求</a><ul>
+<li><a class="reference internal" href="#id11">4.1 模组侧调度节拍</a></li>
+<li><a class="reference internal" href="#id12">4.2 帧间隔建议</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13">5. 命令总览</a><ul>
+<li><a class="reference internal" href="#id14">5.1 模组 → 器材（下行）</a></li>
+<li><a class="reference internal" href="#id15">5.2 器材 → 模组（上行）</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id16">6. 应答与数据格式详解</a><ul>
+<li><a class="reference internal" href="#id17">6.1 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 设备信息</a></li>
+<li><a class="reference internal" href="#id18">6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数</a></li>
+<li><a class="reference internal" href="#id19">6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数</a></li>
+<li><a class="reference internal" href="#id20">6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据</a><ul>
+<li><a class="reference internal" href="#a-1">(a) 待机 —— 长度 1</a></li>
+<li><a class="reference internal" href="#b-2">(b) 倒计时启动 —— 长度 2</a></li>
+<li><a class="reference internal" href="#c-2">(c) 故障 —— 长度 2</a></li>
+<li><a class="reference internal" href="#d-2">(d) 禁用 —— 长度 2</a></li>
+<li><a class="reference internal" href="#e-13-8">(e) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 13（8 位速度）</a></li>
+<li><a class="reference internal" href="#f-14-16">(f) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 14（16 位速度）</a></li>
+<li><a class="reference internal" href="#id21">距离字段说明</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#xx">6.5 <code class="docutils literal notranslate"><span class="pre">44-xx</span></code> 信息服务</a><ul>
+<li><a class="reference internal" href="#c3-app">6.5.1 <code class="docutils literal notranslate"><span class="pre">44-C3</span></code> 查询 APP 连接状态</a></li>
+<li><a class="reference internal" href="#c5-ble">6.5.2 <code class="docutils literal notranslate"><span class="pre">44-C5</span></code> 查询 BLE 名称</a></li>
+<li><a class="reference internal" href="#c6-ble-mac">6.5.3 <code class="docutils literal notranslate"><span class="pre">44-C6</span></code> 查询 BLE MAC</a></li>
+<li><a class="reference internal" href="#c7-ble">6.5.4 <code class="docutils literal notranslate"><span class="pre">44-C7</span></code> 修改 BLE 名称</a></li>
+<li><a class="reference internal" href="#d1">6.5.5 <code class="docutils literal notranslate"><span class="pre">44-D1</span></code> 查询音频（经典蓝牙）名称</a></li>
+<li><a class="reference internal" href="#c8">6.5.6 <code class="docutils literal notranslate"><span class="pre">44-C8</span></code> 修改音频名称</a></li>
+<li><a class="reference internal" href="#c9">6.5.7 <code class="docutils literal notranslate"><span class="pre">44-C9</span></code> 查询设备型号</a></li>
+<li><a class="reference internal" href="#ca-sn">6.5.8 <code class="docutils literal notranslate"><span class="pre">44-CA</span></code> 查询 SN</a></li>
+<li><a class="reference internal" href="#cb">6.5.9 <code class="docutils literal notranslate"><span class="pre">44-CB</span></code> 查询音频状态</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a">6.6 <code class="docutils literal notranslate"><span class="pre">60-0A</span></code> 请求模组重启</a></li>
+<li><a class="reference internal" href="#id22">6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制</a></li>
+<li><a class="reference internal" href="#f">6.8 <code class="docutils literal notranslate"><span class="pre">53-9F</span></code> 扩展数据（模组 → 器材）</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">7. 典型交互流程</a></li>
+<li><a class="reference internal" href="#id24">8. 关键注意事项</a></li>
+<li><a class="reference internal" href="#id25">修订记录</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../modules/sdc-hr-p01/sdc-hr-p01.html"
+                          title="上一章">SDC-HR-P01（心率监测型）</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/protocol/serial-protocol.md.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../modules/sdc-hr-p01/sdc-hr-p01.html" title="SDC-HR-P01（心率监测型）"
+             >上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">健身器材串口通信协议</a></li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 版权所有 2026, xavier.
+      由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0创建。
+    </div>
+  </body>
+</html>
