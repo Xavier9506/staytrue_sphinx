@@ -1,14 +1,7 @@
 {
-    "index": 0.014,
-    "modules/sdc-hr-p01/sdc-hr-p01": 0.02,
-    "modules/sdc-le-01/sdc-le-01": 0.018,
-    "modules/sdc-le-01d/sdc-le-01d": 0.019,
-    "modules/sdc-le-02hd/sdc-le-02hd": 0.018,
-    "modules/sdc-le-02hs/sdc-le-02hs": 0.014,
-    "modules/sdc-le-05/sdc-le-05": 0.017,
-    "modules/sdc-le-a3/sdc-le-a3": 0.02,
-    "modules/sdc-le-a3h/sdc-le-a3h": 0.009,
-    "modules/sdc-le-a3l/sdc-le-a3l": 0.021,
-    "protocol/serial-protocol": 0.079,
-    "staytrue": 0.009
+    "index": 0.029,
+    "modules/sdc-le-02hd/sdc-le-02hd": 0.022,
+    "modules/sdc-le-02hs/sdc-le-02hs": 0.02,
+    "modules/sdc-le-05/sdc-le-05": 0.019,
+    "protocol/serial-protocol": 0.062
 }
