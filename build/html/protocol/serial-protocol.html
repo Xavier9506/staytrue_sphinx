@@ -797,7 +797,7 @@ window.runMermaid = runMermaid;</script>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code></p></td>
 <td><p>设备信息应答</p></td>
-<td><p>4 或 6 字节</p></td>
+<td><p>6 字节</p></td>
 <td><p>见 6.1，同时用于锁定波特率</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x50</span></code></p></td>
@@ -998,30 +998,117 @@ window.runMermaid = runMermaid;</script>
 </table>
 <section id="id17">
 <h3>6.1 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 设备信息<a class="headerlink" href="#id17" title="链接到此标题。">¶</a></h3>
-<p>数据区支持两种长度：</p>
+<p>数据区固定 6 字节：</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>长度</p></th>
+<tr class="row-odd"><th class="head"><p>偏移</p></th>
 <th class="head"><p>字段</p></th>
+<th class="head"><p>长度</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>4</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[厂商码</span> <span class="pre">W][机型码</span> <span class="pre">W]</span></code></p></td>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>类型</p></td>
+<td><p>W</p></td>
 </tr>
-<tr class="row-odd"><td><p>6</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[类型</span> <span class="pre">W][厂商码</span> <span class="pre">W][机型码</span> <span class="pre">W]</span></code></p></td>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>厂商码</p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>机型码</p></td>
+<td><p>W</p></td>
 </tr>
 </tbody>
 </table>
 <ul class="simple">
 <li><p>全部小端。</p></li>
 <li><p>器材回复此帧即视为波特率锁定成功。</p></li>
-<li><p>示例（厂商码 0x1234，机型码 0x5678）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">00</span> <span class="pre">34</span> <span class="pre">12</span> <span class="pre">78</span> <span class="pre">56</span> <span class="pre">58</span> <span class="pre">03</span></code></p></li>
+<li><p>示例（类型 0x0001、厂商码 0x1234、机型码 0x5678）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">00</span> <span class="pre">01</span> <span class="pre">00</span> <span class="pre">34</span> <span class="pre">12</span> <span class="pre">78</span> <span class="pre">56</span> <span class="pre">59</span> <span class="pre">03</span></code></p></li>
+</ul>
+<section id="w">
+<h4>类型（<code class="docutils literal notranslate"><span class="pre">类型</span> <span class="pre">W</span></code>）固定定义<a class="headerlink" href="#w" title="链接到此标题。">¶</a></h4>
+<p>类型由本协议统一固定，器材按实际器材种类填下表对应值：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>类别</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x0000</span></code></p></td>
+<td><p>未定义</p></td>
+<td><p>不区分器材类别，联调阶段可暂填该值</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x0001</span></code></p></td>
+<td><p>跑步机</p></td>
+<td><p>Treadmill</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x0002</span></code></p></td>
+<td><p>健身车</p></td>
+<td><p>Indoor Bike</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x0003</span></code></p></td>
+<td><p>椭圆机</p></td>
+<td><p>Elliptical</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x0004</span></code></p></td>
+<td><p>划船机</p></td>
+<td><p>Rower</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x0005</span></code></p></td>
+<td><p>踏步机</p></td>
+<td><p>Stepper</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x0006</span></code></p></td>
+<td><p>登山机</p></td>
+<td><p>Stair Climber</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x0007</span></code>~<code class="docutils literal notranslate"><span class="pre">0x00FF</span></code></p></td>
+<td><p>预留</p></td>
+<td><p>后续类别扩展，未定义值填 <code class="docutils literal notranslate"><span class="pre">0x0000</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0x0100</span></code>~<code class="docutils literal notranslate"><span class="pre">0xFFFF</span></code></p></td>
+<td><p>厂家自定义</p></td>
+<td><p>需与模组方另行约定，默认不使用</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>类型只描述器材种类，不参与能力声明；坡度、暂停、心率预警等能力仍由 6.3 节 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 的 <code class="docutils literal notranslate"><span class="pre">DATA[2]</span></code> 位域决定。</p></li>
 </ul>
 </section>
 <section id="id18">
-<h3>6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数<a class="headerlink" href="#id18" title="链接到此标题。">¶</a></h3>
+<h4>厂商码与机型码<a class="headerlink" href="#id18" title="链接到此标题。">¶</a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>长度</p></th>
+<th class="head"><p>取值来源</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>厂商码</p></td>
+<td><p>W</p></td>
+<td><p><strong>联系业务获取</strong>，由模组方统一分配</p></td>
+</tr>
+<tr class="row-odd"><td><p>机型码</p></td>
+<td><p>W</p></td>
+<td><p><strong>联系业务获取</strong>，由模组方统一分配</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>厂商码、机型码由模组方业务侧分配，器材固件请使用业务提供的值，<strong>不要自行编造</strong>。</p></li>
+<li><p>同一厂商下机型码应唯一；器材固件升级或改版不得变更这两个码。</p></li>
+<li><p>两码仅用于标识器材身份，不参与波特率锁定判定；但模组会记录并在能力声明、数据解析时关联使用。</p></li>
+<li><p>若器材尚未取得分配值，可先填 <code class="docutils literal notranslate"><span class="pre">0x0000</span></code> 联调，量产前必须替换为业务分配的实际值。</p></li>
+</ul>
+</section>
+</section>
+<section id="id19">
+<h3>6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数<a class="headerlink" href="#id19" title="链接到此标题。">¶</a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>长度</p></th>
@@ -1044,8 +1131,8 @@ window.runMermaid = runMermaid;</script>
 <li><p>示例（最大 12.0、最小 1.0）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">02</span> <span class="pre">78</span> <span class="pre">0A</span> <span class="pre">20</span> <span class="pre">03</span></code></p></li>
 </ul>
 </section>
-<section id="id19">
-<h3>6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数<a class="headerlink" href="#id19" title="链接到此标题。">¶</a></h3>
+<section id="id20">
+<h3>6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数<a class="headerlink" href="#id20" title="链接到此标题。">¶</a></h3>
 <p>数据区固定 3 字节：</p>
 <table class="docutils align-default">
 <thead>
@@ -1100,8 +1187,8 @@ window.runMermaid = runMermaid;</script>
 <li><p>示例（0~15%，公制）：<code class="docutils literal notranslate"><span class="pre">02</span> <span class="pre">50</span> <span class="pre">03</span> <span class="pre">0F</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">5C</span> <span class="pre">03</span></code></p></li>
 </ul>
 </section>
-<section id="id20">
-<h3>6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据<a class="headerlink" href="#id20" title="链接到此标题。">¶</a></h3>
+<section id="id21">
+<h3>6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据<a class="headerlink" href="#id21" title="链接到此标题。">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">DATA[0]</span></code> 为设备状态：</p>
 <table class="docutils align-default">
 <thead>
@@ -1220,8 +1307,8 @@ window.runMermaid = runMermaid;</script>
 <h4>(f) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 14（16 位速度）<a class="headerlink" href="#f-14-16" title="链接到此标题。">¶</a></h4>
 <p>与 (e) 相同，仅速度变为 2 字节小端（0.1 km/h，英制时 0.1 mph），其后字段整体后移 1 字节。</p>
 </section>
-<section id="id21">
-<h4>距离字段说明<a class="headerlink" href="#id21" title="链接到此标题。">¶</a></h4>
+<section id="id22">
+<h4>距离字段说明<a class="headerlink" href="#id22" title="链接到此标题。">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bit15</span></code>（<code class="docutils literal notranslate"><span class="pre">0x8000</span></code>）为<strong>分辨率标志</strong>，低 15 位为有效数值：</p>
 <ul>
@@ -1532,8 +1619,8 @@ window.runMermaid = runMermaid;</script>
 </div>
 <p>模组收到后立即复位，无应答，此前的 BLE 连接会断开。复位期间串口无任何输出，该时长取决于模组芯片启动，协议不做约定；复位完成后模组从零开始重新握手（同 2.2 节的上电时序），器材需重新应答 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> / <code class="docutils literal notranslate"><span class="pre">50-03</span></code> / <code class="docutils literal notranslate"><span class="pre">50-02</span></code>。</p>
 </section>
-<section id="id22">
-<h3>6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制<a class="headerlink" href="#id22" title="链接到此标题。">¶</a></h3>
+<section id="id23">
+<h3>6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制<a class="headerlink" href="#id23" title="链接到此标题。">¶</a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CMD-SCMD</p></th>
@@ -1692,8 +1779,8 @@ window.runMermaid = runMermaid;</script>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id23">
-<h2>7. 典型交互流程<a class="headerlink" href="#id23" title="链接到此标题。">¶</a></h2>
+<section id="id24">
+<h2>7. 典型交互流程<a class="headerlink" href="#id24" title="链接到此标题。">¶</a></h2>
 <pre  class="mermaid">
         sequenceDiagram
     participant M as 模组
@@ -1718,8 +1805,8 @@ window.runMermaid = runMermaid;</script>
     M-&gt;&gt;E: 02 53 03 50 03 / 02 53 0A 59 03
     </pre></section>
 <hr class="docutils" />
-<section id="id24">
-<h2>8. 关键注意事项<a class="headerlink" href="#id24" title="链接到此标题。">¶</a></h2>
+<section id="id25">
+<h2>8. 关键注意事项<a class="headerlink" href="#id25" title="链接到此标题。">¶</a></h2>
 <ul class="contains-task-list simple">
 <li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">确认模组型号与电平匹配：SDC-LE-05 为 3.3 V，SDC-LE-02HS / SDC-LE-02HD 支持 3.3~5 V。</p></li>
 <li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">8 数据位、无校验、<strong>1 停止位</strong>，波特率与模组锁定值一致。</p></li>
@@ -1740,8 +1827,8 @@ window.runMermaid = runMermaid;</script>
 </ul>
 </section>
 <hr class="docutils" />
-<section id="id25">
-<h2>修订记录<a class="headerlink" href="#id25" title="链接到此标题。">¶</a></h2>
+<section id="id26">
+<h2>修订记录<a class="headerlink" href="#id26" title="链接到此标题。">¶</a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>文档版本</p></th>
@@ -1793,17 +1880,21 @@ window.runMermaid = runMermaid;</script>
 </ul>
 </li>
 <li><a class="reference internal" href="#id16">6. 应答与数据格式详解</a><ul>
-<li><a class="reference internal" href="#id17">6.1 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 设备信息</a></li>
-<li><a class="reference internal" href="#id18">6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数</a></li>
-<li><a class="reference internal" href="#id19">6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数</a></li>
-<li><a class="reference internal" href="#id20">6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据</a><ul>
+<li><a class="reference internal" href="#id17">6.1 <code class="docutils literal notranslate"><span class="pre">50-00</span></code> 设备信息</a><ul>
+<li><a class="reference internal" href="#w">类型（<code class="docutils literal notranslate"><span class="pre">类型</span> <span class="pre">W</span></code>）固定定义</a></li>
+<li><a class="reference internal" href="#id18">厂商码与机型码</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id19">6.2 <code class="docutils literal notranslate"><span class="pre">50-02</span></code> 速度参数</a></li>
+<li><a class="reference internal" href="#id20">6.3 <code class="docutils literal notranslate"><span class="pre">50-03</span></code> 坡度参数</a></li>
+<li><a class="reference internal" href="#id21">6.4 <code class="docutils literal notranslate"><span class="pre">51</span></code> 设备状态与数据</a><ul>
 <li><a class="reference internal" href="#a-1">(a) 待机 —— 长度 1</a></li>
 <li><a class="reference internal" href="#b-2">(b) 倒计时启动 —— 长度 2</a></li>
 <li><a class="reference internal" href="#c-2">(c) 故障 —— 长度 2</a></li>
 <li><a class="reference internal" href="#d-2">(d) 禁用 —— 长度 2</a></li>
 <li><a class="reference internal" href="#e-13-8">(e) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 13（8 位速度）</a></li>
 <li><a class="reference internal" href="#f-14-16">(f) 停机 / 运行中 / 减速停止 / 暂停 —— 长度 14（16 位速度）</a></li>
-<li><a class="reference internal" href="#id21">距离字段说明</a></li>
+<li><a class="reference internal" href="#id22">距离字段说明</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#xx">6.5 <code class="docutils literal notranslate"><span class="pre">44-xx</span></code> 信息服务</a><ul>
@@ -1819,13 +1910,13 @@ window.runMermaid = runMermaid;</script>
 </ul>
 </li>
 <li><a class="reference internal" href="#a">6.6 <code class="docutils literal notranslate"><span class="pre">60-0A</span></code> 请求模组重启</a></li>
-<li><a class="reference internal" href="#id22">6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制</a></li>
+<li><a class="reference internal" href="#id23">6.7 <code class="docutils literal notranslate"><span class="pre">62-xx</span></code> 音频控制</a></li>
 <li><a class="reference internal" href="#f">6.8 <code class="docutils literal notranslate"><span class="pre">53-9F</span></code> 扩展数据（模组 → 器材）</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id23">7. 典型交互流程</a></li>
-<li><a class="reference internal" href="#id24">8. 关键注意事项</a></li>
-<li><a class="reference internal" href="#id25">修订记录</a></li>
+<li><a class="reference internal" href="#id24">7. 典型交互流程</a></li>
+<li><a class="reference internal" href="#id25">8. 关键注意事项</a></li>
+<li><a class="reference internal" href="#id26">修订记录</a></li>
 </ul>
 </li>
 </ul>
