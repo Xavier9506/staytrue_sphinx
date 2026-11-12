@@ -69,6 +69,11 @@ AB5605B核心，蓝牙双模设计，主打音频功能，支持FM接收、SD卡
      - 右声道音频输出
      - O（输出）
 
+模组封装
+~~~~~~~~~~
+
+- PCB封装文件 :download:`SDC-LE-05.PcbDoc <footprint/sdc-le-05.PcbDoc>` :download:`(嘉立创EDA)SDC-LE-05.elibz2 <footprint/sdc-le-05.elibz2>`
+
 极限参数
 ~~~~~~~~~~
 

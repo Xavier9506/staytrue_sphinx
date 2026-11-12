@@ -65,6 +65,11 @@ SDC-LE-01
      - 电源正极，2~3.6V（典型3.3V）
      - P（电源）
 
+模组封装
+~~~~~~~~~~
+
+- PCB封装文件 :download:`SDC-LE-01.SchLib <footprint/sdc-le-01.SchLib>` :download:`SDC-LE-01.PcbLib <footprint/sdc-le-01.PcbLib>` 
+
 极限参数
 ~~~~~~~~~~
 

@@ -61,6 +61,11 @@ AB2021A3核心，极致成本控制，满足基础BLE通信需求，采用贴片
      - 电源正极，2~4.5V（典型3.3V）
      - P（电源）
 
+模组封装
+~~~~~~~~~~
+
+- PCB封装文件 :download:`SDC-LE-A3.PcbDoc <footprint/sdc-le-a3.PcbDoc>` :download:`(嘉立创EDA)SDC-LE-A3.elibz2 <footprint/sdc-le-a3.elibz2>`
+
 极限参数
 ~~~~~~~~~~
 

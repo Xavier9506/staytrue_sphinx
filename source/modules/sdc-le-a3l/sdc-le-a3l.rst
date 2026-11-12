@@ -73,6 +73,11 @@ SDC-LE-A3升级款，双安装方式（贴片+插针），适配多形态产品�
      - 电源正极，2~4.5V（典型3.3V）
      - P（电源）
 
+模组封装
+~~~~~~~~~~
+
+- PCB封装文件 :download:`SDC-LE-A3L.PcbDoc <footprint/sdc-le-a3l.PcbDoc>` :download:`(嘉立创EDA)SDC-LE-A3L.elibz2 <footprint/sdc-le-a3l.elibz2>`
+
 极限参数
 ~~~~~~~~~~
 

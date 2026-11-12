@@ -80,6 +80,10 @@ AB5602B核心，蓝牙双模设计，主打音频功能，适配带音频输出�
      - 串口TX数据发送端,3.3V/5V电平兼容
      - O（输出）
 
+模组封装
+~~~~~~~~~~
+
+- PCB封装文件 :download:`SDC-LE-02HS.PcbDoc <footprint/sdc-le-02hs.PcbDoc>` :download:`(嘉立创EDA)SDC-LE-02HS.elibz2 <footprint/sdc-le-02hs.elibz2>`
 
 极限参数
 ~~~~~~~~~~
