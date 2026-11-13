@@ -35,6 +35,15 @@
 
    protocol/serial-protocol
 
+APP 接入测试
+============
+
+.. toctree::
+   :maxdepth: 2
+   :caption: APP 接入测试
+
+   app-test/app-guide
+
 使用说明
 ========
 

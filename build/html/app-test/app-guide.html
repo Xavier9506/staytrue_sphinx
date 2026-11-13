@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>模组接入 APP 测试指导 &#8212; staytrue 0.1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=922a0d3a" />
+    
+    <script src="../_static/documentation_options.js?v=7c91f8fd"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="prev" title="健身器材串口通信协议" href="../protocol/serial-protocol.html" />
+ 
+<style type="text/css">
+    /* Hide search-related elements */
+    #searchbox {
+        display: none !important;
+    }
+
+    .search {
+        display: none !important;
+    }
+</style>
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../protocol/serial-protocol.html" title="健身器材串口通信协议"
+             accesskey="P">上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">模组接入 APP 测试指导</a></li>
+
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="app">
+<h1>模组接入 APP 测试指导<a class="headerlink" href="#app" title="链接到此标题。">¶</a></h1>
+<p><strong>目标 APP：PuroFit</strong>　　<strong>文档版本：V0.1</strong></p>
+<p>本文面向客户硬件 / 固件工程师，说明如何安装 APP、进入测试入口、连接模组并核对关键信息。</p>
+<hr class="docutils" />
+<section id="id1">
+<h2>1. 快速开始<a class="headerlink" href="#id1" title="链接到此标题。">¶</a></h2>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">安装 PuroFit，并授予蓝牙、定位权限</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">打开「设置 → 关于」，连点“FIT”logo 5 次并输入密码解锁 Debug</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">在 Debug 中打开「蓝牙助手快速入口」</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">首页点击「标题」进入蓝牙助手，选择器材类型</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">点击「扫描」，连接模组，确认连接状态为「已连接」</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox">核对实时数据与设备信息</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h2>2. APP 下载与安装<a class="headerlink" href="#id2" title="链接到此标题。">¶</a></h2>
+<section id="id3">
+<h3>2.1 下载渠道<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>序号</p></th>
+<th class="head"><p>渠道</p></th>
+<th class="head"><p>适用平台 / 地区</p></th>
+<th class="head"><p>获取方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>正式版本</p></td>
+<td><p>Android、iOS；自动区分地区与设备</p></td>
+<td><p>扫码或链接下载</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>国内安卓测试版</p></td>
+<td><p>Android，中国大陆（应用名 PuroFit普练）</p></td>
+<td><p>扫码或链接下载</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>海外安卓测试版</p></td>
+<td><p>Android，海外（应用名 PuroFit）</p></td>
+<td><p>扫码或链接下载</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>iOS 测试版</p></td>
+<td><p>iOS</p></td>
+<td><p>联系业务获取</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id4">
+<h4>2.1.1 正式版本（推荐）<a class="headerlink" href="#id4" title="链接到此标题。">¶</a></h4>
+<a class="reference internal image-reference" href="../_images/purofit-official-qr.png"><img alt="PuroFit 正式版下载二维码" class="align-center" src="../_images/purofit-official-qr.png" width="180" />
+</a>
+<ul class="simple">
+<li><p>地址：<a class="reference external" href="https://download.purofitplus.com">https://download.purofitplus.com</a></p></li>
+<li><p>同一二维码同时适配 Android 与 iOS，扫码后按地区与手机系统自动跳转到对应商店，无需自行选择平台。</p></li>
+<li><p>国内自动跳转国内应用商店，海外自动跳转 App Store 或 Google Play。</p></li>
+<li><p>扫码失败时：确认手机已联网，改用系统相机重试；仍失败则手动打开上述网址，或向业务索取直装包。</p></li>
+</ul>
+</section>
+<section id="id5">
+<h4>2.1.2 国内安卓测试版<a class="headerlink" href="#id5" title="链接到此标题。">¶</a></h4>
+<a class="reference internal image-reference" href="../_images/purofit-android-test-cn.png"><img alt="PuroFit 国内安卓测试版下载二维码" class="align-center" src="../_images/purofit-android-test-cn.png" width="180" />
+</a>
+<ul class="simple">
+<li><p>地址：<a class="reference external" href="https://www.pgyer.com/XbSmYQ7Y">https://www.pgyer.com/XbSmYQ7Y</a></p></li>
+<li><p>应用名：<strong>PuroFit普练</strong>（中文版），用于国内联调与新功能验证。</p></li>
+<li><p>打开链接后点击「安装」，浏览器下载 APK，按提示允许「安装未知来源应用」。</p></li>
+<li><p>若页面提示需要安装密码，联系业务获取。</p></li>
+<li><p>提示「应用未安装」或签名冲突时，先卸载手机上已安装的 PuroFit 再重装。</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>2.1.3 海外安卓测试版<a class="headerlink" href="#id6" title="链接到此标题。">¶</a></h4>
+<a class="reference internal image-reference" href="../_images/purofit-android-test-global.png"><img alt="PuroFit 海外安卓测试版下载二维码" class="align-center" src="../_images/purofit-android-test-global.png" width="180" />
+</a>
+<ul class="simple">
+<li><p>地址：<a class="reference external" href="https://www.pgyer.com/1WEyMgYL">https://www.pgyer.com/1WEyMgYL</a></p></li>
+<li><p>应用名：<strong>PuroFit（国际版）</strong>，用于海外客户与海外机型联调。</p></li>
+<li><p>该测试版按设备架构分包，下载时选择与手机匹配的版本。</p></li>
+<li><p>无 GMS 的机型直接下载 APK 安装；有 GMS 的机型也可后续改用正式版验证。</p></li>
+</ul>
+</section>
+<section id="ios">
+<h4>2.1.4 iOS 测试版<a class="headerlink" href="#ios" title="链接到此标题。">¶</a></h4>
+<ul class="simple">
+<li><p>iOS 测试版不对外公开发布，<strong>需联系业务获取</strong>邀请。</p></li>
+<li><p>流程：业务发送 TestFlight 邀请链接 → 手机安装 TestFlight → 打开链接接受邀请 → 安装 PuroFit 测试版。</p></li>
+<li><p>TestFlight 版本有有效期，到期后需重新向业务申请邀请。</p></li>
+</ul>
+<blockquote>
+<div><p>正式版、国内测试版、海外测试版的应用名与包名不同，可同时安装在一台手机上；反馈问题时请注明使用的是哪一个渠道的版本。</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id7">
+<h3>2.2 版本与系统要求<a class="headerlink" href="#id7" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>要求</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Android</p></td>
+<td><p>8.0 及以上</p></td>
+</tr>
+<tr class="row-odd"><td><p>iOS</p></td>
+<td><p>15 及以上</p></td>
+</tr>
+<tr class="row-even"><td><p>手机蓝牙</p></td>
+<td><p>BLE 4.2 及以上</p></td>
+</tr>
+<tr class="row-odd"><td><p>版本选择</p></td>
+<td><p>日常使用选正式版；联调、新功能验证选对应测试版</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>正式版与测试版可能同时存在于手机上，版本号以「我的 → 设置 → 关于」显示为准，反馈问题时须注明是正式版还是测试版。</p>
+</div></blockquote>
+</section>
+<section id="id8">
+<h3>2.3 安装后权限<a class="headerlink" href="#id8" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>权限</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>蓝牙 / 附近的设备</p></td>
+<td><p>Android 12 及以上为「附近的设备」，必须允许</p></td>
+</tr>
+<tr class="row-odd"><td><p>定位</p></td>
+<td><p>Android 11 及以下扫描 BLE 必需，同时需打开系统定位开关</p></td>
+</tr>
+<tr class="row-even"><td><p>通知</p></td>
+<td><p>用于连接状态与消息提示，建议允许</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h3>2.4 安装校验<a class="headerlink" href="#id9" title="链接到此标题。">¶</a></h3>
+<ul class="simple">
+<li><p>桌面图标名应为 <strong>PuroFit</strong>（海外版）或 <strong>PuroFit普练</strong>（国内版）。</p></li>
+<li><p>打开「我的 → 设置 → 关于」，核对版本号（格式 <code class="docutils literal notranslate"><span class="pre">v2.0.51-11031719</span></code>）与获取渠道一致。</p></li>
+<li><p>若手机上同时装有正式版与测试版，以「关于」的版本号区分，不要以图标名判断。</p></li>
+<li><p>反馈问题需附「关于」截图与渠道（海外版 / 国内版）。</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2>3. 纯蓝牙测试入口（蓝牙助手）<a class="headerlink" href="#id10" title="链接到此标题。">¶</a></h2>
+<p>PuroFit 内置「蓝牙助手」调试入口，可直接扫描、连接模组并查看 BLE 上报的实时数据，用于模组射频与数据链路自测。</p>
+<video src="../_static/video/purofit-bluetooth-entry.mp4" controls playsinline width="280" style="display:block;margin:0 auto 1em;"></video><blockquote>
+<div><p>上方为「我的 → 设置 → 关于 → 解锁 Debug → 打开<strong>蓝牙助手快速入口</strong>→ 首页 → 标题（蓝牙助手快速入口）」的完整操作录屏。</p>
+</div></blockquote>
+<section id="id11">
+<h3>3.1 入口路径总览<a class="headerlink" href="#id11" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>步骤</p></th>
+<th class="head"><p>操作</p></th>
+<th class="head"><p>页面位置</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>进入设置</p></td>
+<td><p>我的 → 设置</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>解锁 Debug</p></td>
+<td><p>设置 → 关于 → 连续点击“FIT”logo 5 次 → 输入密码</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>开启快速入口</p></td>
+<td><p>设置 → Debug → 打开<strong>蓝牙助手快速入口</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>进入蓝牙助手</p></td>
+<td><p>首页点击顶部「标题」</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>选择器材类型</p></td>
+<td><p>跑步机 / 单车 / 椭圆机 / 划船机 / 爬楼机</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>扫描并连接</p></td>
+<td><p>「扫描」→ 设备列表 → 点击目标设备</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>蓝牙助手快速入口是一次性开关，开启后长期有效，无需每次重复解锁。</p>
+</div></blockquote>
+</section>
+<section id="debug">
+<h3>3.2 解锁 Debug 菜单<a class="headerlink" href="#debug" title="链接到此标题。">¶</a></h3>
+<ol class="arabic simple">
+<li><p>打开「我的 → 设置」。</p></li>
+<li><p>点击「关于」，进入关于页。</p></li>
+<li><p><strong>连续点击“FIT”logo 5 次</strong>，弹出「请输入密码」对话框。</p></li>
+<li><p>输入测试密码后，点击「确认」。</p></li>
+<li><p>校验通过后进入 Debug 菜单。</p></li>
+</ol>
+<blockquote>
+<div><p>关于页同时提供「服务协议 / 隐私政策 / 会员协议」入口，与测试无关。</p>
+</div></blockquote>
+</section>
+<section id="id12">
+<h3>3.3 开启蓝牙助手快速入口<a class="headerlink" href="#id12" title="链接到此标题。">¶</a></h3>
+<ol class="arabic simple">
+<li><p>设置页进入 Debug 菜单。</p></li>
+<li><p>打开 <strong>蓝牙助手快速入口</strong> 开关。</p></li>
+<li><p>说明文字为「开启后首页点击“标题”可快速进入蓝牙助手页面」。</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>开关</p></th>
+<th class="head"><p>作用</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>蓝牙助手快速入口</p></td>
+<td><p>首页标题可点击，直接跳转蓝牙助手</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id13">
+<h3>3.4 进入蓝牙助手并选择器材<a class="headerlink" href="#id13" title="链接到此标题。">¶</a></h3>
+<ol class="arabic simple">
+<li><p>返回 APP 首页。</p></li>
+<li><p>点击顶部 <strong>标题</strong>，进入「蓝牙助手」页。</p></li>
+<li><p>按被测设备选择器材类型：</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>器材类型</p></th>
+<th class="head"><p>适用场景</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>跑步机</p></td>
+<td><p>跑步机模组联调，含速度、坡度、距离、卡路里、时间等</p></td>
+</tr>
+<tr class="row-odd"><td><p>单车</p></td>
+<td><p>健身车模组联调，含功率、踏频、距离、卡路里、时间等</p></td>
+</tr>
+<tr class="row-even"><td><p>椭圆机</p></td>
+<td><p>椭圆机模组联调，含功率、踏频、距离、卡路里、时间等</p></td>
+</tr>
+<tr class="row-odd"><td><p>划船机</p></td>
+<td><p>划船机模组联调，含功率、桨频、距离、卡路里、时间等</p></td>
+</tr>
+<tr class="row-even"><td><p>爬楼机</p></td>
+<td><p>爬楼机模组联调，含步数、步频、距离、卡路里、时间等</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li><p>选择后进入「蓝牙调试工具」页，页面标题显示所选器材类型。</p></li>
+</ol>
+</section>
+<section id="id14">
+<h3>3.5 扫描并连接模组<a class="headerlink" href="#id14" title="链接到此标题。">¶</a></h3>
+<ol class="arabic simple">
+<li><p>确认模组已上电并完成初始化。</p></li>
+<li><p>手机打开蓝牙；Android 11 及以下还需打开系统定位。</p></li>
+<li><p>在调试工具页点击「扫描」。</p></li>
+<li><p>等待设备列表出现目标设备，核对名称。</p></li>
+<li><p>点击设备发起连接，顶部「连接状态」由 <strong>未连接</strong> 变为 <strong>已连接</strong>。</p></li>
+</ol>
+<p>连接成功后即可在页面查看模组上报的实时数据；断开时状态回到「未连接」。</p>
+</section>
+<section id="id15">
+<h3>3.6 调试面板字段<a class="headerlink" href="#id15" title="链接到此标题。">¶</a></h3>
+<p>以跑步机页为例，页面包含以下字段：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>分组</p></th>
+<th class="head"><p>字段</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>连接</p></td>
+<td><p>连接状态、扫描按钮、设备列表、设备、设备状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>速度</p></td>
+<td><p>瞬时速度（Km/h）、瞬时配速（min/km）、平均速度（Km/h）、平均配速（min/km）</p></td>
+</tr>
+<tr class="row-even"><td><p>坡度</p></td>
+<td><p>坡度、坡度角设置</p></td>
+</tr>
+<tr class="row-odd"><td><p>热量</p></td>
+<td><p>每小时热量（kcal）、每分钟热量（kcal）、热量（kcal）</p></td>
+</tr>
+<tr class="row-even"><td><p>时间</p></td>
+<td><p>已用时间、剩余时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>里程</p></td>
+<td><p>总距离（米）、步数</p></td>
+</tr>
+<tr class="row-even"><td><p>其他</p></td>
+<td><p>功率输出（W）、心率（bpm）</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>字段以模组实际上报为准，未上报的字段显示为空或 0 属正常现象。</p>
+</div></blockquote>
+<p>「设备」「设备状态」的含义与蓝牙芯片信息的详细说明见 <a class="reference internal" href="#id20">4.3</a>。</p>
+</section>
+<section id="id16">
+<h3>3.7 该入口的适用范围<a class="headerlink" href="#id16" title="链接到此标题。">¶</a></h3>
+<ul class="simple">
+<li><p>适用：BLE 连接性验证、数据上下行核对、单位与量程核对、现场快速判定模组是否正常。</p></li>
+<li><p>不适用：账号、课程、云端运动记录等业务功能，这些需走正式业务流程。</p></li>
+<li><p>该入口只用于 BLE 连接与数据观察，器材 MCU 与模组的串口握手仍需按协议单独验证。</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h2>4. 关键信息查看与常见问题<a class="headerlink" href="#id17" title="链接到此标题。">¶</a></h2>
+<section id="id18">
+<h3>4.1 连接状态<a class="headerlink" href="#id18" title="链接到此标题。">¶</a></h3>
+<ul class="simple">
+<li><p>调试页顶部显示当前连接状态：<strong>未连接 / 已连接</strong>。</p></li>
+<li><p>未连接时点击「扫描」，在设备列表中选择目标模组，连接成功后状态变为「已连接」。</p></li>
+<li><p>断开或退出调试页后状态回到「未连接」，需重新扫描连接。</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>4.2 器材数据<a class="headerlink" href="#id19" title="链接到此标题。">¶</a></h3>
+<p>调试页按所选器材展示实时数据，字段见 <a class="reference internal" href="#id15">3.6</a>。核对要点：</p>
+<ul class="simple">
+<li><p>数值应随器材动作实时变化；长时间不变说明未收到模组上报。</p></li>
+<li><p>器材未上报的字段显示为空或 0，属正常现象。</p></li>
+<li><p>与器材本体显示对比，出现固定偏差时先检查器材侧单位与量程设置。</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>4.3 设备信息<a class="headerlink" href="#id20" title="链接到此标题。">¶</a></h3>
+<p>调试页顶部显示当前连接状态与设备名称；点击「设备」进入「设备信息」页，可查看以下内容：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>查看位置</p></th>
+<th class="head"><p>可查看内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>调试页顶部</p></td>
+<td><p>连接状态（详见 <a class="reference internal" href="#id18">4.1</a>）、设备名称、设备状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>设备信息 → 蓝牙芯片信息</p></td>
+<td><p>模组型号、序列号、生产商，以及硬件 / 固件 / 软件版本</p></td>
+</tr>
+<tr class="row-even"><td><p>设备信息 → 公有能力</p></td>
+<td><p>模组支持哪些通用数据项，逐项显示支持或不支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>设备信息 → 目标设定功能</p></td>
+<td><p>模组支持哪些由 APP 下发的目标值，逐项显示支持或不支持</p></td>
+</tr>
+<tr class="row-even"><td><p>设备信息 → 支持范围</p></td>
+<td><p>阻力、速度、坡度、功率、心率等参数的取值范围（最小 / 最大 / 步进）</p></td>
+</tr>
+</tbody>
+</table>
+<p>核对要点：</p>
+<ul class="simple">
+<li><p>同一场地有多台模组时，务必按「设备」名称区分，避免连错设备。</p></li>
+<li><p>页面显示的条目与取值由模组应答决定，与模组规格不符时，先按 <a class="reference internal" href="../protocol/serial-protocol.html"><span class="doc">健身器材串口通信协议</span></a> 核对设备信息与能力应答。</p></li>
+<li><p>未上报的项显示为 <code class="docutils literal notranslate"><span class="pre">--</span></code>，需确认模组固件是否已实现对应功能。</p></li>
+<li><p>修改设备名称后仍显示旧值属缓存，关闭 APP 后台后重新连接即可刷新。</p></li>
+<li><p>序列号与硬件 / 固件 / 软件版本是定位问题的必要信息，反馈前请截图留存。</p></li>
+</ul>
+</section>
+<section id="id21">
+<h3>4.4 反馈材料<a class="headerlink" href="#id21" title="链接到此标题。">¶</a></h3>
+<p>反馈问题时请提供：</p>
+<ul class="simple">
+<li><p>APP 版本号（关于页）与手机型号、系统版本</p></li>
+<li><p>调试页截图（连接状态与关键数据）</p></li>
+<li><p>设备信息页截图（序列号与硬件 / 固件 / 软件版本）</p></li>
+</ul>
+</section>
+<section id="id22">
+<h3>4.5 常见问题<a class="headerlink" href="#id22" title="链接到此标题。">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>现象</p></th>
+<th class="head"><p>可能原因</p></th>
+<th class="head"><p>处理方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>首页标题点不动</p></td>
+<td><p>未开启「蓝牙助手快速入口」</p></td>
+<td><p>设置 → Debug 中打开该开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>设置里没有 Debug</p></td>
+<td><p>未解锁或操作错误</p></td>
+<td><p>关于页连点“FIT”logo 5 次，输入业务提供的密码</p></td>
+</tr>
+<tr class="row-even"><td><p>提示「密码错误」</p></td>
+<td><p>密码不正确或已更换</p></td>
+<td><p>向业务或测试负责人重新索取</p></td>
+</tr>
+<tr class="row-odd"><td><p>扫描不到设备</p></td>
+<td><p>未授予定位权限或系统定位关闭；模组未上电或处于复位</p></td>
+<td><p>打开定位与蓝牙后重新扫描；确认模组供电，具体参考模组规格</p></td>
+</tr>
+<tr class="row-even"><td><p>连接失败</p></td>
+<td><p>已被其他手机占用</p></td>
+<td><p>断开其他设备后重试</p></td>
+</tr>
+<tr class="row-odd"><td><p>连接后立即断开</p></td>
+<td><p>距离过远或天线被遮挡</p></td>
+<td><p>靠近至 1 m 内，远离金属与人体遮挡</p></td>
+</tr>
+<tr class="row-even"><td><p>连上但无数据</p></td>
+<td><p>器材未向模组上报数据</p></td>
+<td><p>确认器材侧串口通讯正常后再测 APP</p></td>
+</tr>
+<tr class="row-odd"><td><p>控制无响应</p></td>
+<td><p>器材未响应控制指令</p></td>
+<td><p>确认器材侧串口通讯指令是否正常</p></td>
+</tr>
+<tr class="row-even"><td><p>速度或距离数值偏差</p></td>
+<td><p>计量单位与器材设置不一致</p></td>
+<td><p>核对器材侧串口通讯单位设置</p></td>
+</tr>
+<tr class="row-odd"><td><p>字段显示为空或 0</p></td>
+<td><p>器材未上报该项</p></td>
+<td><p>属正常现象，确认该字段是否可选</p></td>
+</tr>
+<tr class="row-even"><td><p>名称或设备信息显示异常</p></td>
+<td><p>修改后未刷新缓存</p></td>
+<td><p>关闭 APP 后台后再次连接查看</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">模组接入 APP 测试指导</a><ul>
+<li><a class="reference internal" href="#id1">1. 快速开始</a></li>
+<li><a class="reference internal" href="#id2">2. APP 下载与安装</a><ul>
+<li><a class="reference internal" href="#id3">2.1 下载渠道</a><ul>
+<li><a class="reference internal" href="#id4">2.1.1 正式版本（推荐）</a></li>
+<li><a class="reference internal" href="#id5">2.1.2 国内安卓测试版</a></li>
+<li><a class="reference internal" href="#id6">2.1.3 海外安卓测试版</a></li>
+<li><a class="reference internal" href="#ios">2.1.4 iOS 测试版</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">2.2 版本与系统要求</a></li>
+<li><a class="reference internal" href="#id8">2.3 安装后权限</a></li>
+<li><a class="reference internal" href="#id9">2.4 安装校验</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">3. 纯蓝牙测试入口（蓝牙助手）</a><ul>
+<li><a class="reference internal" href="#id11">3.1 入口路径总览</a></li>
+<li><a class="reference internal" href="#debug">3.2 解锁 Debug 菜单</a></li>
+<li><a class="reference internal" href="#id12">3.3 开启蓝牙助手快速入口</a></li>
+<li><a class="reference internal" href="#id13">3.4 进入蓝牙助手并选择器材</a></li>
+<li><a class="reference internal" href="#id14">3.5 扫描并连接模组</a></li>
+<li><a class="reference internal" href="#id15">3.6 调试面板字段</a></li>
+<li><a class="reference internal" href="#id16">3.7 该入口的适用范围</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id17">4. 关键信息查看与常见问题</a><ul>
+<li><a class="reference internal" href="#id18">4.1 连接状态</a></li>
+<li><a class="reference internal" href="#id19">4.2 器材数据</a></li>
+<li><a class="reference internal" href="#id20">4.3 设备信息</a></li>
+<li><a class="reference internal" href="#id21">4.4 反馈材料</a></li>
+<li><a class="reference internal" href="#id22">4.5 常见问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../protocol/serial-protocol.html"
+                          title="上一章">健身器材串口通信协议</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/app-test/app-guide.md.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="提交" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../protocol/serial-protocol.html" title="健身器材串口通信协议"
+             >上一页</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">staytrue 0.1 文档</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">模组接入 APP 测试指导</a></li>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 版权所有 2026, xavier.
+      由 <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0创建。
+    </div>
+  </body>
+</html>
